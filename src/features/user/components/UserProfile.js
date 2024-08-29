@@ -57,7 +57,7 @@ export default function User() {
   }
 
   return (
-    <div className='h-screen'>
+    <div className='min-h-screen'>
       <div className='md:p-5'>
         <div className='text-xl font-semibold px-5'>My Profile</div>
         <div className='pb-10'>

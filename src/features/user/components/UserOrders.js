@@ -18,7 +18,7 @@ export default function UserOrders() {
   // }, [dispatch, userInfo])
 
   return (
-    <div className='h-screen md:p-5'>
+    <div className='min-h-screen md:p-5'>
       <div className='text-xl font-semibold p-5'>My Orders</div>
       {orders && orders.map((order, index) => (
 
