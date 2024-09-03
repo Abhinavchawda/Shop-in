@@ -22,11 +22,16 @@ import AdminHome from "./pages/AdminHome";
 import AdminProductDetailPage from "./pages/AdminProductDetailPage";
 import AdminProductFormPage from "./pages/AdminProdctFormPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
+import AboutUs from "./pages/AboutUsPage";
+import ContactUs from "./pages/ContactUsPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Protected><Home></Home></Protected>,
+    element: 
+    // <Protected>
+      <Home></Home>
+    // </Protected>, 
   },
   {
     path: "/admin",
@@ -53,7 +58,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/product-detail/:id",
-    element: <div><Protected><ProductDetailPage></ProductDetailPage></Protected></div>,
+    element: <div>
+      {/* <Protected> */}
+      <ProductDetailPage></ProductDetailPage>
+      {/* </Protected> */}
+      </div>,
   },
   {
     path: "/admin/product-detail/:id",
@@ -113,6 +122,14 @@ const router = createBrowserRouter([
     path: "*",
     element: <div><PageNotFound></PageNotFound></div>,
   },
+  {
+    path: "/about",
+    element: <div><Protected><AboutUs></AboutUs></Protected></div>,
+  },
+  {
+    path: "/contact",
+    element: <div><Protected><ContactUs></ContactUs></Protected></div>,
+  },
 ]);
 
 function App() {
@@ -127,7 +144,7 @@ function App() {
   }, [dispatch, user])
 
   return (
-    <div className="App">
+    <div className="App overflow-hidden">
       <RouterProvider router={router} />
     </div>
   );

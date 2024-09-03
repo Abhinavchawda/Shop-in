@@ -53,7 +53,7 @@ export default function Cart() {
 
   useEffect(() => {
     dispatch(fetchItemsByUserIdAsync(user.id))
-  }, [])
+  }, [dispatch]) //added dispatch
 
   const handleRemove = (e, id) => {
     dispatch(deleteItemFromCartAsync(id))
@@ -61,7 +61,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="bg-white mt-10 mx-auto max-w-5xl px-2 sm:px-4 md:px-6 lg:px-8 xl:px-10 pb-5 rounded-xl shadow-xl">
+    <div className="bg-white my-10 mx-auto max-w-5xl px-2 sm:px-4 md:px-6 lg:px-8 xl:px-10 pb-5 rounded-xl shadow-xl">
 
       {items.length == 0 &&
         <div className='pt-10 flex items-center justify-center text-red-500 font-bold text-4xl'>

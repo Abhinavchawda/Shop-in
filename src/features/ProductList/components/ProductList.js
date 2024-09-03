@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { ChevronLeftIcon, ChevronRightIcon, StarIcon } from '@heroicons/react/20/solid'
+import { StarIcon } from '@heroicons/react/20/solid'
 
 import { selectTotalItems, selectAllProducts, fetchProductsByFilterAsync, selectBrands, selectCategories, fetchBrandsAsync, fetchCategoriesAsync } from '../ProductSlice';
 
@@ -17,7 +17,7 @@ import {
   Transition,
   TransitionChild,
 } from '@headlessui/react'
-import { CursorArrowRaysIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom';
 
@@ -64,8 +64,6 @@ export default function ProductList() {
   const [page, setPage] = useState(1);
   // const ITEMS_PER_PAGE = 10;
 
-
-
   const handleFilter = (e, section, option) => {
     //section is for knowing that what by which property we are filtering
     //option is for knowing that what is the option choose
@@ -93,7 +91,7 @@ export default function ProductList() {
       //   newFilter[section.id].splice(index, 1)
       // }
       setFilter(newFilter);
-      console.log("filter obj", { filter });
+      // console.log("filter obj", { filter });
     }
   }
 
@@ -121,7 +119,6 @@ export default function ProductList() {
     dispatch(fetchBrandsAsync())
     dispatch(fetchCategoriesAsync())
   }, [])
-
 
   const [selected, setSelected] = useState(null);
 
@@ -200,8 +197,6 @@ export default function ProductList() {
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               <DesktopFilter handleFilter={handleFilter} filters={filters} selected={selected} setSelected={setSelected}></DesktopFilter>
-
-
 
               {/* Product grid */}
               <div className="lg:col-span-3">
@@ -430,7 +425,7 @@ function ProductsGrid({ products }) {
               </div>
               <div className="p-4 flex flex-col gap-2">
                 <h3 className="text-sm font-medium text-gray-900 line-clamp-2">{product.title}</h3>
-                <div className="flex justify-between items-center gap-1 text-orange-400">
+                <div className="flex justify-between items-center gap-1 text-blue-950">
                   <div className='flex justify-center items-center gap-2'>
                   <StarIcon className="h-5 w-5" />
                   <span className="text-xs">{product.rating}</span>

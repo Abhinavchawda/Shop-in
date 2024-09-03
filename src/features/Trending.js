@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 import Slider from "react-slick";
 
 // Import css files
@@ -12,14 +11,6 @@ import trending from "../assets/trendingFile.json"
 
 const Trending = () => {
 
-  // var settings = {
-  //   dots: true,
-  //   infinite: true,
-  //   speed: 500,
-  //   slidesToShow: 3,
-  //   slidesToScroll: 1,
-  // };
-
   const settings = {
     dots: true,
     infinite: true,
@@ -28,10 +19,8 @@ const Trending = () => {
     cssEase: "linear"
   };
 
-
   return (
     <div>
-      {/* <div className='border border-black my-5 rounded-xl flex justify-center items-center'> */}
       <div>
         <Slider {...settings}>
           {
@@ -42,27 +31,6 @@ const Trending = () => {
             ))
           }
         </Slider>
-
-        {/* <Slider {...settings}>
-          <div className='bg-black'>
-            <h3>1111</h3>
-          </div>
-          <div>
-            <h3>2</h3>
-          </div>
-          <div>
-            <h3>3</h3>
-          </div>
-          <div>
-            <h3>4</h3>
-          </div>
-          <div>
-            <h3>5</h3>
-          </div>
-          <div>
-            <h3>6</h3>
-          </div>
-        </Slider> */}
       </div>
     </div>
   )

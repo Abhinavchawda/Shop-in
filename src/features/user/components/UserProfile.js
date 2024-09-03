@@ -3,10 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectUserInfo, updateUserAsync } from '../userSlice';
 import { useForm, SubmitHandler } from "react-hook-form"
 // import { selectLoggedInUser } from '../../auth/authSlice';
-import {
-  PencilIcon,
-  TrashIcon
-} from '@heroicons/react/24/outline';
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { MapPinIcon, PhoneIcon } from '@heroicons/react/20/solid';
 
 export default function User() {
@@ -99,28 +96,16 @@ export default function User() {
                       <p className="text-sm leading-6 text-gray-500">{address?.state}</p>
                     </div>
                     <div className="flex flex-col gap-4 justify-center items-center">
+                      {/* Edit  */}
                       <PencilIcon
                         className="h-5 w-5 hover:scale-125"
                         onClick={e => handleEditForm(index)}
                       ></PencilIcon>
+                      {/* Remove */}
                       <TrashIcon
                         className="h-5 w-5 hover:scale-125"
                         onClick={e => handleRemove(e, index)}
                       ></TrashIcon>
-                      {/* <button
-                        onClick={e => handleEditForm(index)}
-                        type="button"
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
-                      >
-                        Edit
-                      </button> */}
-                      {/* <button
-                        onClick={e => handleRemove(e, index)}
-                        type="button"
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
-                      >
-                        Remove
-                      </button> */}
                     </div>
                   </li>
                 </ul>
@@ -269,7 +254,7 @@ export default function User() {
             {addAddressForm && <form noValidate onSubmit={handleSubmit((data) => {
               handleAdd(data)
               reset()
-              console.log(data);
+              // console.log(data);
             })}>
 
               <div className="space-y-12 bg-white p-5 md:p-10">

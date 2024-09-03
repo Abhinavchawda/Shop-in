@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { StarIcon } from '@heroicons/react/20/solid'
 import { Radio, RadioGroup } from '@headlessui/react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import { fetchProductByIdAsync, selectProductById } from '../ProductSlice';
 import { addToCartAsync, selectCount, selectItems } from '../../cart/cartSlice';
 import { selectLoggedInUser } from '../../auth/authSlice'
 import { discountedPrice } from '../../../app/constants';
+
+import PopUp from '../../popUp/PopUp';
 
 const product = {
   name: 'Basic Tee 6-Pack',
@@ -83,15 +85,29 @@ export default function ProductDetail() {
   const items = useSelector(selectItems)
 
   const handleCart = (e)=>{
-    e.preventDefault()
-    if(items && items.findIndex(item=>item.product.id===product.id) < 0) {
-      const newItem = {product: product.id, quantity:1, user:user.id}
-      // delete newItem['id']
-      dispatch( addToCartAsync(newItem) )
-      alert("Item added to Cart")
+    if(user) {
+      e.preventDefault()
+      if(items && items.findIndex(item=>item.product.id===product.id) < 0) {
+        const newItem = {product: product.id, quantity:1, user:user.id}
+        // delete newItem['id']
+        dispatch( addToCartAsync(newItem) )
+        // alert("Item added to Cart")
+        // <PopUp title="Item added to Cart" ></PopUp>
+        // <PopUp></PopUp>
+        setMessage("Item added to Cart");
+        setShow(!show)
+      }
+      else {
+        setMessage("Item Already Added")
+        setShow(!show)
+        // func();
+      }
     }
     else {
-      alert("Item Already Added")
+      // <Navigate to={"/login"}>
+      console.log("hii");
+      
+      // </Navigate>
     }
   }
 
@@ -99,8 +115,23 @@ export default function ProductDetail() {
     dispatch(fetchProductByIdAsync(params.id))
   }, [dispatch, params.id])
 
+  const [message, setMessage] = useState("msg");
+
+  const [show, setShow] = useState(0);
+
+  const func = () => {
+    setMessage("I am changed")
+    setShow(!show)
+  }
+
   return (
     <div className="bg-white rounded-xl shadow-xl">
+      {/* <button onClick={func}>Click you</button> */}
+      {
+        show &&
+        <PopUp className="z-20" title={message}></PopUp>
+      }
+
       {/* if product exists */}
       {product ? <div className="pt-6">
         <nav aria-label="Breadcrumb">
@@ -237,7 +268,7 @@ export default function ProductDetail() {
               </div>
 
               {/* Sizes */}
-              <div className="mt-10">
+              {/* <div className="mt-10">
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-medium text-gray-900">Size</h3>
                   <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
@@ -299,7 +330,8 @@ export default function ProductDetail() {
                     ))}
                   </RadioGroup>
                 </fieldset>
-              </div>
+              </div> */}
+
                 
               <button
                 onClick={handleCart}
