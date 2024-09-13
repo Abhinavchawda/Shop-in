@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react'
-import { TrashIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { TrashIcon } from '@heroicons/react/24/outline'
 import { Link, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetCartAsync, selectItems } from '../features/cart/cartSlice';
@@ -10,6 +9,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { selectUserInfo, updateUserAsync } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
 import { discountedPrice } from '../app/constants';
+import PopUp from '../features/popUp/PopUp';
 
 // const products = [
 //     {
@@ -53,6 +53,15 @@ export default function Example() {
     const [selectedAddress, setSelectedAddress] = useState(null)
     const [paymentMethod, setPaymentMethod] = useState('cash')
 
+    const [show, setShow] = useState(0);
+    const [message, setMessage] = useState("msg");
+
+    const func = () => {
+        setTimeout(() => {
+            setShow(false)
+        }, 1200)
+    }
+
     const handleQuantity = (e, item) => {
         // + to convert the string to int
         dispatch(updateCartAsync({ id: item.id, quantity: +e.target.value }))
@@ -87,13 +96,20 @@ export default function Example() {
             // TODO : Redirect to order-success page
         }
         else {
-            alert('Enter Address')
+            setShow(true);
+            setMessage('Please, Enter your Address !');
+            func();
         }
     }
 
     return (
         <>
-            {items.length == 0 && <Navigate to='/'></Navigate>}
+            {
+                show &&
+                <PopUp className="z-20" title={message}></PopUp>
+            }
+
+            {items && items.length == 0 && <Navigate to='/'></Navigate>}
 
             {/* {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`}></Navigate>} */}
 

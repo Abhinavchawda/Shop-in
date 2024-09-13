@@ -48,19 +48,26 @@ export default function AdminProductForm() {
 
     const handleDelete = () => {
         dispatch(deleteProductAsync(selectedProduct))
-        // alert('Product Deleted ! ')
-        // setMessage("Product Deleted ")
-        // setShow(1);
+        alert('Product Deleted ! ')
+        setMessage("Product Deleted ")
+        setShow(1);
+        func();
         { <Navigate to='/admin' replace={true}></Navigate> }
         reset()
     }
 
     const [show, setShow] = useState(0);
-    const [message, setMessage] = useState(0);
+    const [message, setMessage] = useState("msg");
+    const func = () => {
+        setTimeout(() => {
+            setShow(false)
+        }, 2000)
+    }
+
 
     return (
         <div>
-            {show !== 0 &&
+            {show &&
                 <PopUp title={message}></PopUp>
             }
 
@@ -95,7 +102,8 @@ export default function AdminProductForm() {
                     // alert('Product Added ! ')
                     setMessage("Product Added !")
                     setShow(1);
-                    reset()
+                    func();
+                    reset();
                 }
                 reset()     //reset the form
                 console.log(product);

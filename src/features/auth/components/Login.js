@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useSelector, useDispatch } from 'react-redux';
 import { checkUserAsync, selectError, selectLoggedInUser } from '../authSlice';
@@ -17,7 +17,6 @@ export default function Login() {
       {user && <Navigate to='/' replace={true}></Navigate>}
       
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-          
 
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -33,7 +32,6 @@ export default function Login() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form noValidate className="space-y-6" onSubmit={handleSubmit((data) => {
           dispatch(checkUserAsync({email: data.email, password: data.password}))
-          console.log(data);
         })} 
           action='#' method='POST'
           >
@@ -80,7 +78,7 @@ export default function Login() {
                 />
                 {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
               </div>
-              {error && <p className='text-red-500'>{error.message}</p>}
+              {error && <p className='text-red-500'>{error.err.message}</p>}
             </div>
 
             <div>

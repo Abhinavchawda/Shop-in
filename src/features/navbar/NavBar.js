@@ -10,7 +10,6 @@ import {
     Transition,
 } from '@headlessui/react'
 import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { HomeIcon } from '@heroicons/react/24/solid'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectItems } from '../cart/cartSlice'
@@ -18,8 +17,8 @@ import { selectUserInfo } from '../user/userSlice'
 
 const navigation = [
     { name: 'Home', link: '/', user: true, admin: true },
-    { name: 'About', link: '/about', user: true },
-    { name: 'Contact', link: '/contact', user: true },
+    { name: 'About', link: '/about', user: true, admin: true },
+    { name: 'Contact', link: '/contact', user: true, admin: true },
 
     { name: 'Admin', link: '/admin', admin: true },
     { name: 'Orders', link: '/admin/orders', admin: true },
@@ -67,22 +66,23 @@ export default function NavBar({ children }) {
                                         </div>
                                         <div className="hidden md:block">
                                             <div className="ml-10 flex items-baseline space-x-4">
-                                                {user && navigation.map((item) =>
-                                                    item[user.role] ?
-                                                        (<Link
-                                                            key={item.name}
-                                                            to={item.link}
-                                                            className={classNames(
-                                                                item.current
-                                                                    ? 'bg-gray-900 text-white'
-                                                                    : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                                'rounded-md px-3 py-2 text-sm font-medium flex items-center'
-                                                            )}
-                                                            aria-current={item.current ? 'page' : undefined}
-                                                        >
-                                                            {item.name === "Home" ? <HomeIcon className='h-6 w-6'></HomeIcon> : item.name}
-                                                        </Link>
-                                                        ) : null
+                                                {navigation.map((item) =>
+                                                (<Link
+                                                    key={item.name}
+                                                    to={item.link}
+                                                    className={classNames(
+                                                        item.current
+                                                            ? 'bg-gray-900 text-white'
+                                                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                        'rounded-md px-3 py-2 text-sm font-medium flex items-center'
+                                                    )}
+                                                    aria-current={item.current ? 'page' : undefined}
+                                                >
+                                                    {
+                                                        ((item.name === "Admin" || item.name === "Orders") ? ((user && user.role === "admin") && item.name) : item.name)
+                                                    }
+                                                </Link>
+                                                )
                                                 )}
                                             </div>
                                         </div>
@@ -165,24 +165,25 @@ export default function NavBar({ children }) {
 
                             <DisclosurePanel className="md:hidden">
                                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                                    {user && navigation.map((item) =>
-                                        item[user.role] ?
-                                            (<Link
-                                                to={item.link}
-                                            >
-                                                <DisclosureButton
-                                                key={item.name}
-                                                as="a"
-                                                className={classNames(
-                                                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                    'block rounded-md px-3 py-2 text-base font-medium'
-                                                )}
-                                                aria-current={item.current ? 'page' : undefined}
-                                            >
-                                                {item.name === "Home" ? <HomeIcon className='h-6 w-6'></HomeIcon> : item.name}
-                                            </DisclosureButton>
-                                                </Link>
-                                            ) : null
+                                    {navigation.map((item) =>
+                                    (<Link key={item.name}
+                                        to={item.link}
+                                    >
+                                        <DisclosureButton
+                                            key={item.name}
+                                            as="a"
+                                            className={classNames(
+                                                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                'block rounded-md px-3 py-2 text-base font-medium'
+                                            )}
+                                            aria-current={item.current ? 'page' : undefined}
+                                        >
+                                            {
+                                                ((item.name === "Admin" || item.name === "Orders") ? ((user && user.role === "admin") && item.name) : item.name)
+                                            }
+                                        </DisclosureButton>
+                                    </Link>
+                                    )
                                     )}
                                 </div>
                                 <div className="border-t border-gray-700 pb-3 pt-4">

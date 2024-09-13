@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { StarIcon } from '@heroicons/react/20/solid'
 import { Radio, RadioGroup } from '@headlessui/react'
 import { Link, Navigate, useParams } from 'react-router-dom'
@@ -78,15 +78,16 @@ export default function ProductDetail() {
   const product = useSelector(selectProductById)
 
   const user = useSelector(selectLoggedInUser)
-
+  
   const dispatch = useDispatch()
   const params = useParams()
-
+  
   const items = useSelector(selectItems)
-
+  
+  
   const handleCart = (e)=>{
+    e.preventDefault()
     if(user) {
-      e.preventDefault()
       if(items && items.findIndex(item=>item.product.id===product.id) < 0) {
         const newItem = {product: product.id, quantity:1, user:user.id}
         // delete newItem['id']
@@ -96,32 +97,31 @@ export default function ProductDetail() {
         // <PopUp></PopUp>
         setMessage("Item added to Cart");
         setShow(!show)
+        func()
       }
       else {
         setMessage("Item Already Added")
-        setShow(!show)
-        // func();
+        setShow(true)
       }
     }
     else {
-      // <Navigate to={"/login"}>
-      console.log("hii");
-      
-      // </Navigate>
+      setShow(true)
+      setMessage("You are not logged in !")
+      func()
     }
   }
-
+  
   useEffect(()=>{
     dispatch(fetchProductByIdAsync(params.id))
   }, [dispatch, params.id])
-
+  
+  const [show, setShow] = useState(0);
   const [message, setMessage] = useState("msg");
 
-  const [show, setShow] = useState(0);
-
   const func = () => {
-    setMessage("I am changed")
-    setShow(!show)
+    setTimeout(()=>{
+      setShow(false)
+    }, 2000)
   }
 
   return (

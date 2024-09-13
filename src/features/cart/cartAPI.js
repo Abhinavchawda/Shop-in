@@ -60,11 +60,11 @@ export function resetCart(userId) {
     const items = response.data
     // console.log("cartApi : ", items)
     let i = 0;
-    console.log("len : ", items.length)
-    for (i = 0; i < items.length; i++) {
-      console.log("Cart API hai : ". items[i].id)
-      // await deleteItemFromCart(items.id)
-    }
+    // console.log("len : ", items.length)
+    // for (i = 0; i < items.length; i++) {
+    //   console.log("Cart API hai : ". items[i].id)
+    //   // await deleteItemFromCart(items.id)
+    // }
     resolve({ status: "success" })
   }
   );
