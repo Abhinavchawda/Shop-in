@@ -36,7 +36,7 @@ export default function SignUp() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        {/* noValidate se html khud form ko validat nhi karega */}
+        {/* noValidate se html khud form ko validate nhi karega */}
         {/* hum validate nhi karana chahte hai, coz hum apna custom error message show karana chahte h */}
         <form noValidate className="space-y-6" onSubmit={handleSubmit((data) => {
           dispatch(createUserAsync({
@@ -57,7 +57,7 @@ export default function SignUp() {
                 {...register('email', {
                   required: "email is required",
                   pattern: {
-                    value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi,
+                    value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi,    //this is for email validation
                     message: "invalid email"
                   }
                 })}

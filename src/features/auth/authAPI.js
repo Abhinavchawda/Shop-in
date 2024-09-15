@@ -25,7 +25,7 @@ export function checkUser(loginInfo) {
           headers: { 'content-type': 'application/json' }
         }
       )
-
+      
       if(response.ok) {  //if password verified 
         const data = await response.json();
         resolve({ data })

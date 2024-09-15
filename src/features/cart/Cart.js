@@ -44,7 +44,7 @@ export default function Cart() {
   const totalAmount = Math.round(items.reduce((amount, item) => discountedPrice(item.product) * item.quantity + amount, 0))
   const totalItems = items.reduce((total, item) => item.quantity + total, 0)
 
-  const user = useSelector(selectUserInfo)
+  let user = useSelector(selectUserInfo)    //we use let, coz its value may change on reset card
   const handleQuantity = (e, item) => {
     // + to convert the string to int
     dispatch(updateCartAsync({ id: item.id, quantity: +e.target.value }))

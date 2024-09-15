@@ -58,12 +58,12 @@ export function resetCart(userId) {
     // console.log("Cart in : ")
     const response = await fetchItemsByUserId(userId)
     const items = response.data
-    // console.log("cartApi : ", items)
+    // console.log("cartApi reset cart : ", items)
     let i = 0;
     // console.log("len : ", items.length)
     // for (i = 0; i < items.length; i++) {
     //   console.log("Cart API hai : ". items[i].id)
-    //   // await deleteItemFromCart(items.id)
+    //   await deleteItemFromCart(items[i].id)
     // }
     resolve({ status: "success" })
   }
