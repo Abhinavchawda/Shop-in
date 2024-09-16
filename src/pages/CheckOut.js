@@ -381,7 +381,7 @@ export default function Example() {
                                                                 type="button"
                                                                 className="font-medium text-indigo-600 hover:text-indigo-500"
                                                             >
-                                                                {<TrashIcon className='h-7 w-7 hover:scale-125'></TrashIcon>}
+                                                                {<TrashIcon className='h-7 w-7 hover:scale-125  transition-transform duration-300'></TrashIcon>}
                                                             </button>
                                                         </div>
                                                     </div>

@@ -483,7 +483,7 @@ function ProductsGrid({ products }) {
               <div className='mt-3'>
                 <Link to={`/admin/product-form/edit/${product.id}`}
                   className='rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center justify-center gap-5 text-md'>
-                  Edit Product {<PencilIcon className='h-5 w-5 hover:scale-125'></PencilIcon>}
+                  Edit Product {<PencilIcon className='h-5 w-5 hover:scale-125 transition-transform duration-300'></PencilIcon>}
                 </Link>
               </div>
             </Link>

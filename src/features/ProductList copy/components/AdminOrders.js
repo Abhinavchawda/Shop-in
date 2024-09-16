@@ -101,7 +101,7 @@ function AdminOrders() {
               <div className="flex item-center justify-center">
                 <div className="w-6 mr-2 transform hover:text-blue-500 hover:scale-110">
                   <PencilIcon
-                    className="h-4 w-4 hover:scale-125"
+                    className="h-4 w-4 hover:scale-125 transition-transform duration-300"
                     onClick={(e) => handleEdit(order)}
                   ></PencilIcon>
                 </div>

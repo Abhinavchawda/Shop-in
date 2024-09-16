@@ -98,12 +98,12 @@ export default function User() {
                     <div className="flex flex-col gap-4 justify-center items-center">
                       {/* Edit  */}
                       <PencilIcon
-                        className="h-5 w-5 hover:scale-125"
+                        className="h-5 w-5 hover:scale-125 transition-transform duration-300"
                         onClick={e => handleEditForm(index)}
                       ></PencilIcon>
                       {/* Remove */}
                       <TrashIcon
-                        className="h-5 w-5 hover:scale-125"
+                        className="h-5 w-5 hover:scale-125 transition-transform duration-300"
                         onClick={e => handleRemove(e, index)}
                       ></TrashIcon>
                     </div>
@@ -114,7 +114,7 @@ export default function User() {
                   <form noValidate onSubmit={handleSubmit((data) => {
                     handleEdit(data, index)
                     reset()
-                    console.log(data);
+                    // console.log(data);
                   })}>
 
                     <div className="space-y-12 bg-white p-5 md:p-10">

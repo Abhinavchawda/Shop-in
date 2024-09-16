@@ -111,7 +111,7 @@ export default function Cart() {
                         type="button"
                         className="font-medium text-blue-600 hover:text-red-500 flex items-center gap-2"
                       >
-                        {<TrashIcon className='h-7 w-7 hover:scale-125'></TrashIcon>}
+                        {<TrashIcon className='h-7 w-7 hover:scale-125 transition-transform duration-300'></TrashIcon>}
                       </button>
                     </div>
                   </div>
