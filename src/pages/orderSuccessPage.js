@@ -6,7 +6,6 @@ import { selectLoggedInUser } from "../features/auth/authSlice"
 import { resetOrder } from "../features/order/orderSlice"
 
 export default function OrderSuccess() {
-
   const params = useParams()
   const dispatch = useDispatch()
 

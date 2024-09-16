@@ -25,7 +25,6 @@ import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants';
 
 const sortOptions = [
   { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
-  // { name: 'Newest', href: '#', current: false },
   { name: 'Price: Low to High', sort: 'price', order: 'asc', current: false },
   { name: 'Price: High to Low', sort: 'price', order: 'desc', current: false },
 ]
@@ -33,36 +32,6 @@ const sortOptions = [
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
-
-// const oldProducts = [
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     thumbnail: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     title: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 2,
-//     name: 'Basic Tee',
-//     href: '#',
-//     thumbnail: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     title: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 3,
-//     name: 'Basic Tee',
-//     href: '#',
-//     thumbnail: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     title: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-// ];
 
 export default function AdminProductList() {
   const dispatch = useDispatch();
@@ -92,8 +61,6 @@ export default function AdminProductList() {
   const [sort, setSort] = useState([]);
   const [page, setPage] = useState(1);
   // const ITEMS_PER_PAGE = 10;
-
-
 
   const handleFilter = (e, section, option) => {
     //section is for knowing that what by which property we are filtering
@@ -220,7 +187,6 @@ export default function AdminProductList() {
 
               {/* Product grid */}
               <div className="lg:col-span-3">
-
                 <ProductsGrid products={products}></ProductsGrid>
               </div>
             </div>
@@ -445,46 +411,43 @@ function Pagination({ page, setPage, handlePage, totalItems }) {
 function ProductsGrid({ products }) {
   return (
     <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
+      <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8">
         <div>
           <Link to="/admin/product-form"
             className='rounded-md bg-green-600 mt-3 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600'>Add New Product</Link>
         </div>
-        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {Array.isArray(products) && products?.map((product) => (
-            <Link to={`/product-detail/${product.id}`} key={product.id}>
-              <div className="shadow-xl rounded-xl p-2 group relative">
-                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                  <img
-                    src={product.thumbnail}
-                    alt={product.title}
-                    className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                  />
-                </div>
-                <div className="mt-4 flex justify-between">
-                  <div>
-                    <h3 className="text-sm text-gray-700">
-                      <div>
-                        <span aria-hidden="true" className="absolute inset-0" />
-                        {product.title}
-                      </div>
-                    </h3>
-                    <div className='flex items-center gap-2'>
-                      <StarIcon className='h-5 w-5'></StarIcon>
-                      <span><p className="mt-1 text-sm text-gray-500">{product.rating}</p></span>
-                    </div>
-                  </div>
-                  <div className='text-center'>
-                    <p className="mx-1 text-sm font-medium text-gray-900">${Math.round(discountedPrice(product) * (1 - product.discountPercentage / 100))}</p>
-                    <p className="line-through mx-1 text-sm font-medium text-gray-400">${discountedPrice(product)}</p>
-                  </div>
-                </div>
+            <Link to={`/product-detail/${product.id}`} key={product.id}
+              className="group shadow-lg bg-white rounded-lg relative overflow-hidden hover:scale-105 transition duration-300 ease-in-out"
+            >
+              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-t-lg">
+                <img
+                  src={product.thumbnail}
+                  alt={product.title}
+                  className="w-full h-full object-cover object-center"
+                />
               </div>
-              <div className='mt-3'>
-                <Link to={`/admin/product-form/edit/${product.id}`}
-                  className='rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center justify-center gap-5 text-md'>
-                  Edit Product {<PencilIcon className='h-5 w-5 hover:scale-125 transition-transform duration-300'></PencilIcon>}
-                </Link>
+              <div className="p-4 flex flex-col gap-2">
+                <h3 className="text-sm font-medium text-gray-900 line-clamp-2">{product.title}</h3>
+                <div className="flex justify-between items-center gap-1 text-blue-950">
+                  <div className='flex justify-center items-center gap-2'>
+                    <StarIcon className="h-5 w-5" />
+                    <span className="text-xs">{product.rating}</span>
+                  </div>
+
+                  <div className="flex flex-col items-center text-sm font-medium text-gray-900">
+                    <p>${Math.round(discountedPrice(product) * (1 - product.discountPercentage / 100))}</p>
+                    <p className="line-through text-gray-400">${discountedPrice(product)}</p>
+                  </div>
+                </div>
+
+                <div className='mt-2'>
+                  <Link to={`/admin/product-form/edit/${product.id}`}
+                    className='rounded-md bg-indigo-700 px-3 py-2 font-semibold text-white hover:bg-indigo-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center justify-center gap-5 text-md mx-auto w-[4/5]'>
+                    Edit Product {<PencilIcon className='h-5 w-5 hover:scale-125 transition-transform duration-300'></PencilIcon>}
+                  </Link>
+                </div>
               </div>
             </Link>
           ))}

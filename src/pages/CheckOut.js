@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { Link, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,38 +10,12 @@ import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSli
 import { discountedPrice } from '../app/constants';
 import PopUp from '../features/popUp/PopUp';
 
-// const products = [
-//     {
-//         id: 1,
-//         name: 'Throwback Hip Bag',
-//         href: '#',
-//         color: 'Salmon',
-//         price: '$90.00',
-//         quantity: 1,
-//         imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
-//         imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
-//     },
-//     {
-//         id: 2,
-//         name: 'Medium Stuff Satchel',
-//         href: '#',
-//         color: 'Blue',
-//         price: '$32.00',
-//         quantity: 1,
-//         imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-//         imageAlt:
-//             'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-//     },
-//     // More products...
-// ]
-
 export default function Example() {
     const [open, setOpen] = useState(true)
 
     const { register, handleSubmit, watch, reset, formState: { errors }, } = useForm()
 
     const dispatch = useDispatch()
-
     const user = useSelector(selectUserInfo)
     const currentOrder = useSelector(selectCurrentOrder)
 
@@ -53,7 +26,7 @@ export default function Example() {
     const [selectedAddress, setSelectedAddress] = useState(null)
     const [paymentMethod, setPaymentMethod] = useState('cash')
 
-    const [show, setShow] = useState(0);
+    const [show, setShow] = useState(0);    //This is for PopUp module
     const [message, setMessage] = useState("msg");
 
     const func = () => {
@@ -94,10 +67,15 @@ export default function Example() {
             dispatch(createOrderAsync(order))
             dispatch(resetCartAsync(user.id))
             // TODO : Redirect to order-success page
+            // {1 && <Navigate to={`/order-success/${currentOrder.id}`}></Navigate>}
         }
         else {
             setShow(true);
-            setMessage('Please, Enter your Address !');
+            let msg = "Please, Enter your ";
+            if(!selectedAddress) msg = msg + "Address";
+            if(!paymentMethod) msg = msg + ", Payment Method";
+            msg += ' !';
+            setMessage(msg);
             func();
         }
     }

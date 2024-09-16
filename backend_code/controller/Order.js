@@ -14,12 +14,11 @@ exports.fetchOrdersByUser = async (req, res) => {
 };
 
 exports.addOrder = async (req, res) => {
-    // const order = req.body;
-    console.log("New ORder : ", req.body.selectedAddress)
-    const order = new Order(req.body)
+    const tempOrder = {...req.body, date: Date()};
+    const order = new Order(tempOrder)
     try {
         const doc = await order.save();
-        console.log("New ORder : ", doc)
+        // console.log("New ORder : ", doc)
         res.status(201).json(req.body)
     }
     catch (err) {

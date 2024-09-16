@@ -427,10 +427,10 @@ function ProductsGrid({ products }) {
                 <h3 className="text-sm font-medium text-gray-900 line-clamp-2">{product.title}</h3>
                 <div className="flex justify-between items-center gap-1 text-blue-950">
                   <div className='flex justify-center items-center gap-2'>
-                  <StarIcon className="h-5 w-5" />
-                  <span className="text-xs">{product.rating}</span>
+                    <StarIcon className="h-5 w-5" />
+                    <span className="text-xs">{product.rating}</span>
                   </div>
-                  
+
                   <div className="flex flex-col items-center text-sm font-medium text-gray-900">
                     <p>${Math.round(discountedPrice(product) * (1 - product.discountPercentage / 100))}</p>
                     <p className="line-through text-gray-400">${discountedPrice(product)}</p>

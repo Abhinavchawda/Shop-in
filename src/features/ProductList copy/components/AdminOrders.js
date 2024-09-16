@@ -72,10 +72,15 @@ function AdminOrders() {
         <div key={index} className='pb-5'>
 
           <div className="bg-white mt-5 mx-auto max-w-5xl px-2 sm:px-4 md:px-6 lg:px-8 xl:px-10 pb-5 rounded-xl shadow-xl">
+            <div className='flex items-center justify-between'>
             <h2 className="font-bold text-wrap text-2xl pt-3 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-10">
               Order id : {order.id?.substr(order.id?.length - 5)}
             </h2>
-            <h6 className="font-bold flex justify-start items-center text-blue-600 my-2 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-10">
+            <h2 className="font-semibold text-wrap pt-3 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-10">
+              Order Date : {order.date?.substr(0, 10)}
+            </h2>
+            </div>
+            <h6 className="font-semibold flex justify-start items-center text-blue-600 my-2 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-10">
               <div className='flex flex-wrap items-center justify-around'>
                 Order status : {'   '}
 
@@ -112,8 +117,8 @@ function AdminOrders() {
               <div className="flow-root">
                 <ul role="list" className="-my-4 divide-y divide-gray-200">
                   {order.items.map((item) => (
-                    <li key={item.id} className="flex py-1">
-                      <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                    <li key={item.id} className="flex py-3 md:py-1">
+                      <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 my-auto">
                         <img
                           src={item.product.thumbnail}
                           alt={item.product.title}
@@ -121,7 +126,7 @@ function AdminOrders() {
                         />
                       </div>
 
-                      <div className="ml-4 flex flex-1 flex-col">
+                      <div className="ml-4 flex flex-1 flex-col my-auto gap-1">
                         <div>
                           <div className="flex justify-between text-base font-medium text-gray-900">
                             <h3>
@@ -129,12 +134,11 @@ function AdminOrders() {
                             </h3>
                             <p className="ml-4">${discountedPrice(item.product)}</p>
                           </div>
-                          <p className="mt-1 text-sm text-gray-500">{item.product.color}</p>
+                          {/* <p className="mt-1 text-sm text-gray-500">{item.product.color}</p> */}
                         </div>
                         <div className="flex items-end justify-between text-sm">
                           <p className="text-gray-600 rounded-md bg-gray-100 px-2 pb-1 flex items-center justify-center gap-5">
-                            Qty :
-                            <div>{item.quantity}</div>
+                            Qty : {item.quantity}
                           </p>
                         </div>
                       </div>
