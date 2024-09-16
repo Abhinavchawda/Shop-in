@@ -1,9 +1,10 @@
 const express = require("express");
 const server = express();
-const port = 8080;
 const cors = require('cors')
 
 require('dotenv').config();
+
+const port = process.env.PORT;
 
 const {env} = require('node:process')
 
@@ -23,8 +24,6 @@ const authRouter = require("./routes/Auth");
 const cartRouter = require("./routes/Cart");
 const ordersRouter = require("./routes/Order");
 
-const { sanitizeUser } = require("./services/common");
-
 const crypto = require('crypto')
 
 //Jwt
@@ -41,14 +40,11 @@ opts.secretOrKey = 'SECRET_KEY';
 const SECRET_KEY = 'SECRET_KEY';
 const token = jwt.sign({ foo: 'bar' }, SECRET_KEY);
 
-
 //middlewares 
-
 
 server.use(
   session({
-    // secret: process.env.SESSION_KEY,
-    secret: 'keyboard cat',
+    secret: process.env.SESSION_KEY,
     resave: false, // don't save session if unmodified
     saveUninitialized: false, // don't create session until something stored
   })
@@ -56,11 +52,12 @@ server.use(
 server.use(passport.authenticate('session'));
 
 
-
 server.use(cors({
   exposedHeaders: ['X-Total-Count']
 }))
+
 server.use(express.json()); // to parse req.body
+
 
 server.use('/brands', brandsRouter.router);
 
@@ -75,7 +72,6 @@ server.use('/orders', ordersRouter.router);
 
 
 //passport strategies
-
 passport.use('local', new LocalStrategy(
   {usernameField: "email"},
   async function (email, password, done) {
@@ -158,7 +154,7 @@ main().catch(err => console.log(err));
 
 async function main() {
   // await mongoose.connect('mongodb://127.0.0.1:27017/ecommerce');
-  await mongoose.connect(process.env.MONGODB_URL + 'ecommerce');
+  await mongoose.connect(process.env.MONGODB_URL);
 }
 
 server.get('/', (req, res) => {
@@ -166,5 +162,5 @@ server.get('/', (req, res) => {
 })
 
 server.listen(port, () => {
-  console.log("started");
+  console.log(`started on ${port}`);
 })
