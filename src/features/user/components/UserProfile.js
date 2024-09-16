@@ -110,6 +110,8 @@ export default function User() {
                   </li>
                 </ul>
 
+
+                {/* Form for Editing the selected Address  */}
                 {selectedEditIndex === index &&
                   <form noValidate onSubmit={handleSubmit((data) => {
                     handleEdit(data, index)
@@ -251,6 +253,7 @@ export default function User() {
               </button>
             </div>}
 
+            {/* Form for Adding a new Address  */}
             {addAddressForm && <form noValidate onSubmit={handleSubmit((data) => {
               handleAdd(data)
               reset()

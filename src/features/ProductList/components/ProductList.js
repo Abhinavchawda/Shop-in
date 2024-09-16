@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StarIcon } from '@heroicons/react/20/solid'
 
@@ -27,7 +27,6 @@ import { setSelection } from '@testing-library/user-event/dist/cjs/event/selecti
 
 const sortOptions = [
   { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
-  // { name: 'Newest', href: '#', current: false },
   { name: 'Price: Low to High', sort: 'price', order: 'asc', current: false },
   { name: 'Price: High to Low', sort: 'price', order: 'desc', current: false },
 ]
@@ -112,7 +111,7 @@ export default function ProductList() {
   }, [dispatch, filter, sort, page])
 
   useEffect(() => {
-    setPage(1)    //when we apply filter and let say we are on 8 page but there are so less items that it occupy only 2 pages.  
+    setPage(1)    //when we apply filter and let say we are on 8 page but there are so less items that it occupy only 2 pages. Therefore, we set page = 1
   }, [totalItems, sort])
 
   useEffect(() => {

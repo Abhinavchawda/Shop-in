@@ -10,6 +10,7 @@ import { discountedPrice } from '../../../app/constants';
 
 import PopUp from '../../popUp/PopUp';
 
+// This is Sample Product 
 const product = {
   name: 'Basic Tee 6-Pack',
   price: '$192',
@@ -26,23 +27,13 @@ const product = {
     {
       src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
       alt: 'Model wearing plain black basic tee.',
-    },
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
-      alt: 'Model wearing plain gray basic tee.',
-    },
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
-      alt: 'Model wearing plain white basic tee.',
-    },
+    }
   ],
   description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
+    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee.',
   highlights: [
     'Hand cut and sewn locally',
-    'Dyed with our proprietary colors',
-    'Pre-washed & pre-shrunk',
-    'Ultra-soft 100% cotton',
+    'Dyed with our proprietary colors'
   ],
   details:
     'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
@@ -72,64 +63,63 @@ function classNames(...classes) {
 }
 
 export default function ProductDetail() {
+  const dispatch = useDispatch()
+  const params = useParams()
+
   const [selectedColor, setSelectedColor] = useState(colors[0])
   const [selectedSize, setSelectedSize] = useState(sizes[2])
 
+  const user = useSelector(selectLoggedInUser)
   const product = useSelector(selectProductById)
 
-  const user = useSelector(selectLoggedInUser)
-  
-  const dispatch = useDispatch()
-  const params = useParams()
-  
   const items = useSelector(selectItems)
-  
-  
-  const handleCart = (e)=>{
+
+  const handleCart = (e) => {
     e.preventDefault()
-    if(user) {
-      if(items && items.findIndex(item=>item.product.id===product.id) < 0) {
-        const newItem = {product: product.id, quantity:1, user:user.id}
+    if (user) {
+      if (items && items.findIndex(item => item.product.id === product.id) < 0) {
+        const newItem = { product: product.id, quantity: 1, user: user.id }
         // delete newItem['id']
-        dispatch( addToCartAsync(newItem) )
+        dispatch(addToCartAsync(newItem))
         // alert("Item added to Cart")
         // <PopUp title="Item added to Cart" ></PopUp>
         // <PopUp></PopUp>
         setMessage("Item added to Cart");
-        setShow(!show)
+        setShow(true)
         func()
       }
       else {
         setMessage("Item Already Added")
         setShow(true)
+        func()
       }
     }
     else {
+      setMessage("You are not Logged in, Please Login to your Account")
       setShow(true)
-      setMessage("You are not logged in !")
       func()
     }
   }
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     dispatch(fetchProductByIdAsync(params.id))
   }, [dispatch, params.id])
-  
-  const [show, setShow] = useState(0);
+
+  const [show, setShow] = useState(false);
   const [message, setMessage] = useState("msg");
 
   const func = () => {
-    setTimeout(()=>{
+    setTimeout(() => {
       setShow(false)
-    }, 2000)
+    }, 1200)
   }
 
   return (
     <div className="bg-white rounded-xl shadow-xl">
-      {/* <button onClick={func}>Click you</button> */}
       {
-        show &&
-        <PopUp className="z-20" title={message}></PopUp>
+        show ?
+          <PopUp className="z-20" title={message}></PopUp>
+          : ""
       }
 
       {/* if product exists */}
@@ -213,7 +203,7 @@ export default function ProductDetail() {
               ${product.price}
             </p>
 
-            {/* Reviews */}
+            {/* Reviews & Ratings */}
             <div className="mt-6">
               <h3 className="sr-only">Reviews</h3>
               <div className="flex items-center">
@@ -267,72 +257,6 @@ export default function ProductDetail() {
                 </fieldset>
               </div>
 
-              {/* Sizes */}
-              {/* <div className="mt-10">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                  <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                    Size guide
-                  </a>
-                </div>
-
-                <fieldset aria-label="Choose a size" className="mt-4">
-                  <RadioGroup
-                    value={selectedSize}
-                    onChange={setSelectedSize}
-                    className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4"
-                  >
-                    {sizes && sizes.map((size) => (
-                      <Radio
-                        key={size.name}
-                        value={size}
-                        disabled={!size.inStock}
-                        className={({ focus }) =>
-                          classNames(
-                            size.inStock
-                              ? 'cursor-pointer bg-white text-gray-900 shadow-sm'
-                              : 'cursor-not-allowed bg-gray-50 text-gray-200',
-                            focus ? 'ring-2 ring-indigo-500' : '',
-                            'group relative flex items-center justify-center rounded-md border px-4 py-3 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6'
-                          )
-                        }
-                      >
-                        {({ checked, focus }) => (
-                          <>
-                            <span>{size.name}</span>
-                            {size.inStock ? (
-                              <span
-                                className={classNames(
-                                  checked ? 'border-indigo-500' : 'border-transparent',
-                                  focus ? 'border' : 'border-2',
-                                  'pointer-events-none absolute -inset-px rounded-md'
-                                )}
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <span
-                                aria-hidden="true"
-                                className="pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200"
-                              >
-                                <svg
-                                  className="absolute inset-0 h-full w-full stroke-2 text-gray-200"
-                                  viewBox="0 0 100 100"
-                                  preserveAspectRatio="none"
-                                  stroke="currentColor"
-                                >
-                                  <line x1={0} y1={100} x2={100} y2={0} vectorEffect="non-scaling-stroke" />
-                                </svg>
-                              </span>
-                            )}
-                          </>
-                        )}
-                      </Radio>
-                    ))}
-                  </RadioGroup>
-                </fieldset>
-              </div> */}
-
-                
               <button
                 onClick={handleCart}
                 type="submit"
@@ -369,14 +293,14 @@ export default function ProductDetail() {
 
             <div className="mt-10">
               <h2 className="text-sm font-medium text-gray-900">Details</h2>
-
               <div className="mt-4 space-y-6">
                 <p className="text-sm text-gray-600">{product.details}</p>
               </div>
             </div>
           </div>
         </div>
-      </div> : null}
+      </div>
+        : null}
     </div>
   )
 }

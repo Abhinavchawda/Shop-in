@@ -6,20 +6,16 @@ const PopUp = (data) => {
 
     setTimeout(() => {
         setShow(false);
-        console.log("i am out")
-    }, 1000);
+    }, 1500);
 
     return (
-        <div>
-            {/* <button onClick={func}>Click me</button> */}
-            {show &&
-                <div className='z-50 absolute w-3/4 sm:w-2/5 right-4 md:right-20 top-7 mx-auto sm:top-12'>
-                    <div className='h-12 sm:h-16 bg-white w-3/4 sm:w-2/5 fixed flex flex-wrap justify-center items-center rounded-2xl border-2 border-[rgb(170,172,173)] shadow-2xl shadow-[rgb(60,61,151)] mx-auto transition-transform duration-300'>
-                        <CheckCircleIcon className='h-7 w-7 mr-2 text-[rgb(66,178,248)]'></CheckCircleIcon>
-                        {data.title}
-                    </div>
+        <div className="fixed z-50 top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black bg-opacity-50">
+            {show && (
+                <div className="absolute bg-white rounded-xl p-4 md:px-8 text-center shadow-md text-indigo-700">
+                    {/* <CheckCircleIcon className="h-8 w-8 text-green-500 mx-auto mb-2" /> */}
+                    <h2 className="text-lg font-semibold">{data.title}</h2>
                 </div>
-            }
+            )}
         </div>
     )
 }

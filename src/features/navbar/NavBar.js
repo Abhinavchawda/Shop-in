@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import {
     Disclosure,
     DisclosureButton,
@@ -10,7 +9,7 @@ import {
     Transition,
 } from '@headlessui/react'
 import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectItems } from '../cart/cartSlice'
 import { selectUserInfo } from '../user/userSlice'
@@ -34,14 +33,12 @@ function classNames(...classes) {
 }
 
 export default function NavBar({ children }) {
-
     const items = useSelector(selectItems)
     const user = useSelector(selectUserInfo)
 
     const handleSearch = (e) => {
         console.log(e.target.value)
     }
-
     return (
         <>
             {/*This example requires updating your template:
@@ -52,25 +49,25 @@ export default function NavBar({ children }) {
                 <Disclosure as="nav" className="bg-gray-800">
                     {({ open }) => (
                         <>
-                            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                            <div className="mx-auto max-w-7xl px-2 md:px-4 lg:px-8">
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
-                                        <div className="flex-shrink-0 pt-5 bg-white">
-                                            {/* <Link to="/" >
+                                        <NavLink to="/">
+                                            <div className='bg-white p-1 rounded-xl hidden md:block'>
                                                 <img
-                                                    className="h-16 w-16"
+                                                    className="h-12 w-12"
                                                     src='/Shop-in-logo.png'
-                                                    alt="Your Company"
+                                                    alt="Shop-in"
                                                 />
-                                            </Link> */}
-                                        </div>
+                                            </div>
+                                        </NavLink>
                                         <div className="hidden md:block">
                                             <div className="ml-10 flex items-baseline space-x-4">
                                                 {navigation.map((item) =>
                                                 (<Link
                                                     key={item.name}
                                                     to={item.link}
-                                                    className={classNames(
+                                                    className={(item.name === "Home" || (item.name === "Admin" || item.name === "Orders")) ? "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium flex items-center" : classNames(
                                                         item.current
                                                             ? 'bg-gray-900 text-white'
                                                             : 'text-gray-300 hover:bg-gray-700 hover:text-white',
@@ -79,7 +76,7 @@ export default function NavBar({ children }) {
                                                     aria-current={item.current ? 'page' : undefined}
                                                 >
                                                     {
-                                                        ((item.name === "Admin" || item.name === "Orders") ? ((user && user.role === "admin") && item.name) : item.name)
+                                                        ((item.name === "Admin" || item.name === "Orders") ? ((user && user.role === "admin") && item.name) : (item.name !== "Home" ? item.name : ""))
                                                     }
                                                 </Link>
                                                 )
@@ -189,7 +186,7 @@ export default function NavBar({ children }) {
                                 <div className="border-t border-gray-700 pb-3 pt-4">
                                     <div className="flex items-center px-5">
                                         <div className="flex-shrink-0">
-                                            <img className="h-10 w-10 rounded-full" src="/UserImageLogo.png" alt="" />
+                                            <img className="h-10 w-10 rounded-full" src="/UserImageLogo.png" alt="User" />
                                         </div>
                                         <div className="mx-3">
                                             <div className="text-base font-medium leading-none text-white mb-1">{user && user.name}</div>
@@ -235,18 +232,7 @@ export default function NavBar({ children }) {
                         </>
                     )}
                 </Disclosure>
-
-                <header className="bg-white shadow">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                        <h1 className="text-3xl font-bold tracking-tight text-gray-900 flex items-center gap-2">
-                            <img
-                                className="h-16 w-16"
-                                src='/Shop-in-logo.png'
-                                alt="eCommerce"
-                            />
-                            Shop-in</h1>
-                    </div>
-                </header>
+                
                 <main>
                     <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">{children}</div>
                 </main>

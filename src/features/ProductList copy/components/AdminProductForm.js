@@ -50,20 +50,19 @@ export default function AdminProductForm() {
         dispatch(deleteProductAsync(selectedProduct))
         alert('Product Deleted ! ')
         setMessage("Product Deleted ")
-        setShow(1);
+        setShow(true);
         func();
-        { <Navigate to='/admin' replace={true}></Navigate> }
         reset()
+        {<Navigate to='/admin' replace={true}></Navigate> }
     }
 
-    const [show, setShow] = useState(0);
+    const [show, setShow] = useState(false);
     const [message, setMessage] = useState("msg");
     const func = () => {
         setTimeout(() => {
             setShow(false)
-        }, 2000)
+        }, 1000)
     }
-
 
     return (
         <div>
@@ -92,21 +91,18 @@ export default function AdminProductForm() {
                     dispatch(updateProductAsync(product))
                     // alert('Product Updated ! ')
                     setMessage("Product Updated !")
-                    setShow(true);
-
+                    setShow(true)
+                    func()
                     reset()
-                    // setShow(0)
                 }
                 else {
                     dispatch(createProductAsync(product))
-                    // alert('Product Added ! ')
                     setMessage("Product Added !")
-                    setShow(1);
-                    func();
-                    reset();
+                    setShow(true)
+                    func()
+                    reset()
                 }
                 reset()     //reset the form
-                console.log(product);
             })}>
 
                 <div className="space-y-12 bg-white p-5 md:p-12">

@@ -29,17 +29,12 @@ export default function Example() {
     const [show, setShow] = useState(0);    //This is for PopUp module
     const [message, setMessage] = useState("msg");
 
-    const func = () => {
-        setTimeout(() => {
-            setShow(false)
-        }, 1200)
-    }
-
+    
     const handleQuantity = (e, item) => {
         // + to convert the string to int
         dispatch(updateCartAsync({ id: item.id, quantity: +e.target.value }))
     }
-
+    
     const handleRemove = (e, id) => {
         dispatch(deleteItemFromCartAsync(id))
     }
@@ -51,7 +46,7 @@ export default function Example() {
     const handlePayment = (e) => {
         setPaymentMethod(e.target.value)
     }
-
+    
     const handleOrder = (e) => {
         if (paymentMethod && selectedAddress) {
             const order = {
@@ -78,6 +73,12 @@ export default function Example() {
             setMessage(msg);
             func();
         }
+    }
+    
+    const func = () => {
+        setTimeout(() => {
+            setShow(false)
+        }, 1200)
     }
 
     return (
