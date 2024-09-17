@@ -4,7 +4,8 @@ const cors = require('cors')
 
 require('dotenv').config();
 
-const port = process.env.PORT;
+// const port = process.env.PORT;
+const port = 8080;
 
 const { User } = require("./model/User");
 
