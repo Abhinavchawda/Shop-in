@@ -6,8 +6,6 @@ require('dotenv').config();
 
 const port = process.env.PORT;
 
-const {env} = require('node:process')
-
 const { User } = require("./model/User");
 
 //passport js authentification
@@ -60,9 +58,6 @@ server.use(express.json()); // to parse req.body
 
 
 server.use('/brands', brandsRouter.router);
-
-// server.use('/products', isAuth(), productsRouter.router);
-
 server.use('/products', productsRouter.router);
 server.use('/categories', categoriesRouter.router);
 server.use('/users', usersRouter.router);
@@ -105,35 +100,35 @@ passport.use('local', new LocalStrategy(
   }
 ));
 
-passport.use('jwt', new JwtStrategy(opts,
-  async function (jwt_payload, done) {
-    //by default passport uses 'username'
-    const user = await User.findOne({ id: jwt_payload.sub },
-      function (err, user) {
-        if (!user) {
-          return done(null, false, { message: "Login failed : invalid credentials" })
-        }
+// passport.use('jwt', new JwtStrategy(opts,
+//   async function (jwt_payload, done) {
+//     //by default passport uses 'username'
+//     const user = await User.findOne({ id: jwt_payload.sub },
+//       function (err, user) {
+//         if (!user) {
+//           return done(null, false, { message: "Login failed : invalid credentials" })
+//         }
 
-        crypto.pbkdf2(
-          password,
-          user.salt,
-          31000,
-          32,
-          'sha256',
-          async function (err, hashedPassword) {
-            // TODO : this is a temporary method for login we will make a strong secure login method
-            if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
-              return done(null, false, { message: "Login failed : invalid credentials" })
-            }
-            // { id: user.id, name: user.name, email: user.email, addresses: user.addresses }
-            const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY)
-            done(null, token)
-          }
-        )
-      }
-    )
-  }
-));
+//         crypto.pbkdf2(
+//           password,
+//           user.salt,
+//           31000,
+//           32,
+//           'sha256',
+//           async function (err, hashedPassword) {
+//             // TODO : this is a temporary method for login we will make a strong secure login method
+//             if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
+//               return done(null, false, { message: "Login failed : invalid credentials" })
+//             }
+//             // { id: user.id, name: user.name, email: user.email, addresses: user.addresses }
+//             const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY)
+//             done(null, token)
+//           }
+//         )
+//       }
+//     )
+//   }
+// ));
 
 // this creates session variable req.user on being called from callbacks
 passport.serializeUser(function (user, cb) {

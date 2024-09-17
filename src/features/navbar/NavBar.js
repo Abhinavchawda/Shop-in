@@ -103,8 +103,8 @@ export default function NavBar({ children }) {
                                                     <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                                                 </button>
                                             </Link>
-                                            {items.length > 0 && <span className='inline-flex items-center rounded-lg bg-blue-200 text-blue-700 mb-7 -ml-3 px-2 py-1 text-xs z-10 font-bold'>
-                                                {items.length}
+                                            {items?.length > 0 && <span className='inline-flex items-center rounded-lg bg-blue-200 text-blue-700 mb-7 -ml-3 px-2 py-1 text-xs z-10 font-bold'>
+                                                {items?.length}
                                             </span>}
 
                                             {/* Profile dropdown */}
@@ -201,8 +201,8 @@ export default function NavBar({ children }) {
                                                 <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                                             </button>
                                         </Link>
-                                        {items.length > 0 && <span className='inline-flex items-center rounded-lg bg-blue-200 text-blue-700 mb-7 -ml-3 px-2 py-1 text-xs z-10 font-bold'>
-                                            {items.length}
+                                        {items?.length > 0 && <span className='inline-flex items-center rounded-lg bg-blue-200 text-blue-700 mb-7 -ml-3 px-2 py-1 text-xs z-10 font-bold'>
+                                            {items?.length}
                                         </span>}
 
                                     </div>

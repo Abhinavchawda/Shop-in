@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { clearSelectedProduct, createProductAsync, deleteProductAsync, fetchProductByIdAsync, selectBrands, selectProductById, updateProductAsync } from '../../ProductList/ProductSlice'
 import { useForm, SubmitHandler } from "react-hook-form"
-import { useParams, Link, Navigate } from 'react-router-dom'
+import { useParams, Link, Navigate, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { TrashIcon } from '@heroicons/react/24/outline'
 
 import PopUp from '../../popUp/PopUp'
 
 export default function AdminProductForm() {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const params = useParams()
 
@@ -53,7 +54,7 @@ export default function AdminProductForm() {
         setShow(true);
         func();
         reset()
-        {<Navigate to='/admin' replace={true}></Navigate> }
+        navigate('/admin')
     }
 
     const [show, setShow] = useState(false);
@@ -87,13 +88,12 @@ export default function AdminProductForm() {
 
                 if (params.id) {
                     product.id = params.id
-                    product.rating = selectedProduct.rating
                     dispatch(updateProductAsync(product))
-                    // alert('Product Updated ! ')
                     setMessage("Product Updated !")
                     setShow(true)
                     func()
                     reset()
+                    navigate('/admin')
                 }
                 else {
                     dispatch(createProductAsync(product))
@@ -101,6 +101,7 @@ export default function AdminProductForm() {
                     setShow(true)
                     func()
                     reset()
+                    navigate('/admin')
                 }
                 reset()     //reset the form
             })}>

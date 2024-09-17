@@ -2,12 +2,13 @@ const { User } = require("../model/User")
 
 const crypto = require('crypto')
 
-const SECRET_KEY = 'SECRET_KEY'
+require('dotenv').config();
+
+const SECRET_KEY = process.env.SECRET_KEY
 const jwt = require('jsonwebtoken')
 
 exports.createUser = async (req, res) => {
     const user = req.body
-    // console.log("user is : ", user)
     try {
         // const newUser = new User({email: user.email, role: user.role, password: user.password, name: user.name})
         // const doc = await newUser.save()
@@ -37,6 +38,7 @@ exports.createUser = async (req, res) => {
         )
     }
     catch (err) {
+        console.log("ERROR in createUser() in Auth.js")
         res.status(400).json(err)
     }
 }

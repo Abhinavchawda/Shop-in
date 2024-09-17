@@ -8,23 +8,19 @@ exports.createProducts = async (req, res) => {
         res.status(201).json(doc);
     }
     catch (err) {
+        console.log("ERROR in createProduct() in Product.js")
         res.status(400).json(err);
     }
-    // console.log(response);
 };
 
 exports.fetchAllProducts = async (req, res) => {
-    //here we need all query string
-    // filter = {"category": ["smartphone" , "laptops"] }
-    // sort = { _sort : "price" , _order = "desc" }
-    // pagination = {_page : 1, _limit = 10}
-
     // let condition = {}
     // if( !req.query.admin){
-    //     condition.deleted = {$ne:true}
+    //     condition.deleted = {$ne:true}     // $ne means not equal to 
     // } 
+
     //use let instead of const
-    let query = Product.find({});      // $ne means not equal to 
+    let query = Product.find({});      
     let totalProductsQuery = Product.find({});
 
     //first filter by category | eg. electronics, clothing
@@ -47,20 +43,10 @@ exports.fetchAllProducts = async (req, res) => {
 
     const totalDocs = await totalProductsQuery.count().exec();
 
-    //Now, we will do pagination 
-    // if (req.query._page && req.query._per_page) {
-    //     const page = req.query._page;
-    //     const pageSize = req.query._per_page;       //in frontend, we used _per_page instead of _limit
-    //     console.log("page is : ", page, " | size is: ", pageSize, " | skip : ", pageSize * (page - 1))
-    //     // READ ABOUT IT
-    //     await query.skip(pageSize*(page-1)).limit(pageSize);    
-    //     // await query.skip(pageSize*(page-1)).limit(pageSize);    
-    // }
-
     try {
         if (req.query._page && req.query._per_page) {
             const page = req.query._page;
-            //in frontend, we used _per_page instead of _limit
+            //in frontend, we have used _per_page instead of _limit
             const pageSize = req.query._per_page;       
             const docs = await query.skip(pageSize*(page-1)).limit(pageSize)
             res.set('X-Total-Count', totalDocs);    //to set the header
@@ -73,6 +59,7 @@ exports.fetchAllProducts = async (req, res) => {
         }
     }
     catch (err) {
+        console.log("ERROR in fetchAllProducts() in Product.js")
         res.status(400).json(err);
     }
 };
@@ -103,7 +90,7 @@ exports.updateProduct = async (req, res) => {
         // res.status(200).json(updatedProduct);
     }
     catch (err) {
-        console.log("error aaya")
+        console.log("ERROR in updateProduct() in Product.js")
         res.status(400).json(err);
     }
 };
@@ -115,8 +102,7 @@ exports.deleteProduct = async (req, res) => {
         res.status(200).json(product);
     }
     catch (err) {
-        console.log("error aaya")
+        console.log("ERROR in deleteProduct() in Product.js")
         res.status(400).json(err);
     }
 };
-

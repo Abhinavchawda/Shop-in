@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { TrashIcon } from '@heroicons/react/24/outline'
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetCartAsync, selectItems } from '../features/cart/cartSlice';
 import { updateCartAsync, deleteItemFromCartAsync } from '../features/cart/cartSlice';
@@ -11,6 +11,7 @@ import { discountedPrice } from '../app/constants';
 import PopUp from '../features/popUp/PopUp';
 
 export default function Example() {
+    const navigate = useNavigate()
     const [open, setOpen] = useState(true)
 
     const { register, handleSubmit, watch, reset, formState: { errors }, } = useForm()
@@ -61,8 +62,12 @@ export default function Example() {
             console.log("Order in CheckOut: ", order.selectedAddress)
             dispatch(createOrderAsync(order))
             dispatch(resetCartAsync(user.id))
-            // TODO : Redirect to order-success page
-            // {1 && <Navigate to={`/order-success/${currentOrder.id}`}></Navigate>}
+            setShow(true)
+            setMessage("Order Successfully Placed")
+            func()
+            setTimeout(() => {
+                navigate('/')
+            }, 1000)
         }
         else {
             setShow(true);
