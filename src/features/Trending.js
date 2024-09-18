@@ -46,7 +46,7 @@ const Trending = () => {
   };
 
   return (
-    <div className="bg-gray-100 mx-5 py-8">
+    <div className="bg-gray-100 mx-5 py-8 mt-5">
       <div className='mx-auto px-4'>
         <Slider {...settings}>
           {

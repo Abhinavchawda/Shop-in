@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Route, Link, } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -24,14 +24,12 @@ import AdminProductFormPage from "./pages/AdminProdctFormPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 import AboutUs from "./pages/AboutUsPage";
 import ContactUs from "./pages/ContactUsPage";
+import AdminBrandsCategories from "./features/ProductList copy/components/AdminBrandsCategories";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: 
-    // <Protected>
-      <Home></Home>
-    // </Protected>, 
+    element: <Home></Home>
   },
   {
     path: "/admin",
@@ -42,7 +40,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <div><LoginPage></LoginPage></div>,
+    element: <LoginPage></LoginPage>,
   },
   {
     path: "/signup",
@@ -54,15 +52,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/checkout",
-    element: <div><Protected><CheckOut></CheckOut></Protected></div>,
+    element: <Protected><CheckOut></CheckOut></Protected>,
   },
   {
     path: "/product-detail/:id",
-    element: <div>
-      {/* <Protected> */}
-      <ProductDetailPage></ProductDetailPage>
-      {/* </Protected> */}
-      </div>,
+    element: <ProductDetailPage></ProductDetailPage>
   },
   {
     path: "/admin/product-detail/:id",
@@ -99,36 +93,43 @@ const router = createBrowserRouter([
       </ProtectedAdmin>
   },
   {
+    path: "/admin/createBrand",
+    element:
+      <ProtectedAdmin>
+        <AdminBrandsCategories></AdminBrandsCategories>
+      </ProtectedAdmin>
+  },
+  {
     path: "/orders",
-    element: <div><Protected><UserOrdersPage></UserOrdersPage></Protected></div>,
+    element: <Protected><UserOrdersPage></UserOrdersPage></Protected>,
   },
   {
     path: "/order-sucess/:id",
-    element: <div><Protected><OrderSuccess></OrderSuccess></Protected></div>,
+    element: <Protected><OrderSuccess></OrderSuccess></Protected>,
   },
   {
     path: "/profile",
-    element: <div><Protected><UserProfilePage></UserProfilePage></Protected></div>,
+    element: <Protected><UserProfilePage></UserProfilePage></Protected>,
   },
   {
     path: "/logout",
-    element: <div><LogOut></LogOut></div>,
+    element: <LogOut></LogOut>
   },
   {
     path: "/forgot-password",
-    element: <div><ForgotPasswordPage></ForgotPasswordPage></div>,
+    element: <ForgotPasswordPage></ForgotPasswordPage>
   },
   {
     path: "*",
-    element: <div><PageNotFound></PageNotFound></div>,
+    element: <PageNotFound></PageNotFound>
   },
   {
     path: "/about",
-    element: <div><AboutUs></AboutUs></div>,
+    element: <AboutUs></AboutUs>
   },
   {
     path: "/contact",
-    element: <div><ContactUs></ContactUs></div>,
+    element: <ContactUs></ContactUs>
   },
 ]);
 
@@ -144,7 +145,7 @@ function App() {
   }, [dispatch, user])
 
   return (
-    <div className="App overflow-hidden">
+    <div className="overflow-hidden font-lora">
       <RouterProvider router={router} />
     </div>
   );

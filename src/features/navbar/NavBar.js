@@ -25,7 +25,7 @@ const navigation = [
 const userNavigation = [
     { name: 'My Profile', link: '/profile' },
     { name: 'My Orders', link: '/orders' },
-    { name: 'Sign out', link: '/logout' },
+    { name: 'Sign Out', link: '/logout' },
 ]
 
 function classNames(...classes) {
@@ -36,9 +36,9 @@ export default function NavBar({ children }) {
     const items = useSelector(selectItems)
     const user = useSelector(selectUserInfo)
 
-    const handleSearch = (e) => {
-        console.log(e.target.value)
-    }
+    // const handleSearch = (e) => {
+    //     console.log(e.target.value)
+    // }
     return (
         <>
             {/*This example requires updating your template:
@@ -46,14 +46,14 @@ export default function NavBar({ children }) {
           <html class="h-full bg-gray-100">
           <body class="h-full">*/}
             <div className="min-h-full">
-                <Disclosure as="nav" className="bg-gray-800">
+                <Disclosure as="nav" className="bg-gray-900 backdrop-blur-lg md:w-[90%] mx-auto md:rounded-xl md:mt-5">
                     {({ open }) => (
                         <>
                             <div className="mx-auto max-w-7xl px-2 md:px-4 lg:px-8">
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
                                         <NavLink to="/">
-                                            <div className='bg-white p-1 rounded-xl hidden md:block'>
+                                            <div className='bg-white p-1 ml-0 rounded-xl hidden md:block'>
                                                 <img
                                                     className="h-12 w-12"
                                                     src='/Shop-in-logo.png'
@@ -62,21 +62,21 @@ export default function NavBar({ children }) {
                                             </div>
                                         </NavLink>
                                         <div className="hidden md:block">
-                                            <div className="ml-10 flex items-baseline space-x-4">
+                                            <div className="ml-4 flex items-baseline space-x-2">
                                                 {navigation.map((item) =>
                                                 (<Link
                                                     key={item.name}
                                                     to={item.link}
-                                                    className={(item.name === "Home" || (item.name === "Admin" || item.name === "Orders")) ? "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium flex items-center" : classNames(
+                                                    className={(item.name === "Admin" || item.name === "Orders") ? "text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg p-2 text-sm font-medium flex items-center" : classNames(
                                                         item.current
                                                             ? 'bg-gray-900 text-white'
                                                             : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                        'rounded-md px-3 py-2 text-sm font-medium flex items-center'
+                                                        'rounded-lg p-2 text-sm font-medium flex items-center'
                                                     )}
                                                     aria-current={item.current ? 'page' : undefined}
                                                 >
                                                     {
-                                                        ((item.name === "Admin" || item.name === "Orders") ? ((user && user.role === "admin") && item.name) : (item.name !== "Home" ? item.name : ""))
+                                                        ((item.name === "Admin" || item.name === "Orders") ? ((user && user.role === "admin") && item.name) :  item.name)
                                                     }
                                                 </Link>
                                                 )
@@ -85,30 +85,30 @@ export default function NavBar({ children }) {
                                         </div>
                                     </div>
 
-                                    <div className='flex items-center justify-center gap-5 '>
-                                        <input className='rounded-xl bg-slate-800 text-white border hover:border-white w-[60vw] md:w-[37vw]'
+                                    <div className='flex items-center justify-center gap-5'>
+                                        <input className='rounded-xl bg-gray-900 text-white border hover:border-white w-[55vw] md:w-[37vw]'
                                             placeholder='Search Products'>
                                             {/* onChange={e=>handleSearch(e)} */}
                                         </input>
                                     </div>
 
                                     <div className="hidden md:block">
-                                        <div className="ml-4 flex items-center md:ml-6">
+                                        <div className="ml-4 flex items-center">
                                             <Link to='/cart'>
                                                 <button
                                                     type="button"
-                                                    className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                                    className="relative rounded-full bg-gray-900 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                                 >
                                                     <span className="absolute -inset-1.5" ></span>
                                                     <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                                                 </button>
                                             </Link>
-                                            {items?.length > 0 && <span className='inline-flex items-center rounded-lg bg-blue-200 text-blue-700 mb-7 -ml-3 px-2 py-1 text-xs z-10 font-bold'>
+                                            {items?.length > 0 && <span className='inline-flex items-center rounded-lg bg-blue-200 text-blue-700 mb-7 -ml-3 px-2 py-1 text-xs z-50 font-bold'>
                                                 {items?.length}
                                             </span>}
 
                                             {/* Profile dropdown */}
-                                            <Menu as="div" className="relative ml-3">
+                                            <Menu as="div" className="relative ml-3 z-50">
                                                 <div>
                                                     <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                         <span className="absolute -inset-1.5" />
@@ -124,7 +124,7 @@ export default function NavBar({ children }) {
                                                     leaveFrom="transform opacity-100 scale-100"
                                                     leaveTo="transform opacity-0 scale-95"
                                                 >
-                                                    <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                    <MenuItems className="absolute right-0 z-50 mt-1 w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                                         {userNavigation.map((item) => (
                                                             <MenuItem key={item.name}>
                                                                 {({ focus }) => (
@@ -132,7 +132,7 @@ export default function NavBar({ children }) {
                                                                         to={item.link}
                                                                         className={classNames(
                                                                             focus ? 'bg-gray-100' : '',
-                                                                            'block px-4 py-2 text-sm text-gray-700'
+                                                                            'block px-2 py-1 text-sm text-gray-700'
                                                                         )}
                                                                     >
                                                                         {item.name}
@@ -201,7 +201,7 @@ export default function NavBar({ children }) {
                                                 <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                                             </button>
                                         </Link>
-                                        {items?.length > 0 && <span className='inline-flex items-center rounded-lg bg-blue-200 text-blue-700 mb-7 -ml-3 px-2 py-1 text-xs z-10 font-bold'>
+                                        {items?.length > 0 && <span className='inline-flex items-center rounded-lg bg-blue-200 text-blue-700 mb-7 -ml-3 px-2 py-1 text-xs z-50 font-bold'>
                                             {items?.length}
                                         </span>}
 

@@ -1,7 +1,7 @@
 // A mock function to mimic making an async request for data
 export function createProduct(product) {
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/products', 
+    const response = await fetch('https://shop-in-server.vercel.app/products', 
       {
         method: "POST",
         body: JSON.stringify(product),    
@@ -16,7 +16,7 @@ export function createProduct(product) {
 
 export function updateProduct(update) {
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/products/' + update.id,
+    const response = await fetch('https://shop-in-server.vercel.app/products/' + update.id,
       {
         method: 'PATCH',
         body: JSON.stringify(update),
@@ -31,7 +31,7 @@ export function updateProduct(update) {
 
 export function deleteProduct(product) {
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/products/' + product.id,
+    const response = await fetch('https://shop-in-server.vercel.app/products/' + product.id,
       {
         method: 'DELETE',
         // body: JSON.stringify(product),
@@ -52,11 +52,8 @@ export function fetchProductsByFilter({ filter, sort, pagination, admin }) {
   //sort object
   //pagination = {_page: 1, _per_page: 10}
 
-  //now, in updated json-server in pagination
-  //_limit is now _per_page
 
   let queryString = '';
-  console.log("queryString", queryString)
   for (let key in filter) {
     const categoryValues = filter[key]
     if (categoryValues.length > 0) {
@@ -76,7 +73,7 @@ export function fetchProductsByFilter({ filter, sort, pagination, admin }) {
 
   console.log("queryString", queryString)
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/products?' + queryString)
+    const response = await fetch('https://shop-in-server.vercel.app/products?' + queryString)
     const data = await response.json();
 
     const totalItems = await response.headers.get('X-Total-Count')
@@ -84,24 +81,13 @@ export function fetchProductsByFilter({ filter, sort, pagination, admin }) {
 
     // resolve({data})
 
-    //data.data , coz of new version of json-server
-
-    // {
-    //  "first": 1,
-    //  "prev": null,
-    //  "next": 2,
-    //  "last": 15,
-    //  "pages": 15,
-    //  "items": 30,    //totalItems: data.items
-    //  "data": [ {..}, {..}, ...]  //products array : data.data
-    // }
   }
   );
 }
 
 export function fetchProductById(id) {
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/products/' + id)
+    const response = await fetch('https://shop-in-server.vercel.app/products/' + id)
     const data = await response.json();
     resolve({ data })
   }
@@ -110,7 +96,7 @@ export function fetchProductById(id) {
 
 export function fetchBrands() {
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/brands')
+    const response = await fetch('https://shop-in-server.vercel.app/brands')
     const data = await response.json();
     resolve({ data })
   }
@@ -119,7 +105,7 @@ export function fetchBrands() {
 
 export function fetchCategories() {
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/categories')
+    const response = await fetch('https://shop-in-server.vercel.app/categories')
     const data = await response.json();
     resolve({ data })
   }

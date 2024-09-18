@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { clearSelectedProduct, createProductAsync, deleteProductAsync, fetchProductByIdAsync, selectBrands, selectProductById, updateProductAsync } from '../../ProductList/ProductSlice'
+import { clearSelectedProduct, createProductAsync, deleteProductAsync, fetchProductByIdAsync, selectBrands, selectCategories, selectProductById, updateProductAsync } from '../../ProductList/ProductSlice'
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useParams, Link, Navigate, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
@@ -15,6 +15,7 @@ export default function AdminProductForm() {
     const { register, handleSubmit, watch, setValue, reset, formState: { errors }, } = useForm()
 
     const brands = useSelector(selectBrands)
+    const categories = useSelector(selectCategories)
     const selectedProduct = useSelector(selectProductById)
 
     useEffect(() => {
@@ -151,22 +152,22 @@ export default function AdminProductForm() {
                                     Rating
                                 </label>
                                 <div className="mt-2">
-                                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                        <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm"></span>
-                                        <input
+                                    <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm"></span>
+                                    {/* <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                                        <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm"></span> */}
+                                    <select
                                             type='text'
                                             {...register('rating', { required: ("rating is required") })}
                                             id="rating"
-                                            className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                        />
-                                        {/* <select className='rounded-lg' id='rating'>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select> */}
-                                    </div>
+                                            className="block flex-1 bg-transparent py-1 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 border-2 border-gray-300 rounded-md"
+                                        > 
+                                    <option className='text-gray-400'>--Rating--</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -174,16 +175,19 @@ export default function AdminProductForm() {
                                 <label htmlFor="category" className="block text-sm font-medium leading-6 text-gray-900">
                                     Category
                                 </label>
-                                <div className="mt-2">
-                                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                        <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm"></span>
-                                        <input
-                                            type="text"
-                                            {...register('category', { required: ("category is required") })}
-                                            id="category"
-                                            className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                        />
-                                    </div>
+                                    <div className="mt-2">
+                                    <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm"></span>
+                                    <select
+                                        type="text"
+                                        {...register('category', { required: ("Category is required") })}
+                                        id="category"
+                                        className="block flex-1 bg-transparent py-1 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 border-2 border-gray-300 rounded-md"
+                                    ><option className='text-gray-400'>--Choose Category--</option>
+                                        {categories.map(categories =>
+                                            <option value={categories.value} > {categories.label} </option>
+                                        )}
+                                        <option></option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -192,14 +196,19 @@ export default function AdminProductForm() {
                                     Brand
                                 </label>
                                 <div className="mt-2">
-                                    {/* <select className='rounded-md'>
-                                        <option className='text-gray-400'>--Choose Brand--</option>
-                                        {brands.map(brand=>
+                                    <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm"></span>
+                                    <select
+                                        type="text"
+                                        {...register('brand', { required: ("brand is required") })}
+                                        id="brand"
+                                        className="block flex-1 bg-transparent py-1 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 border-2 border-gray-300 rounded-md"
+                                    ><option className='text-gray-400'>--Choose Brand--</option>
+                                        {brands.map(brand =>
                                             <option value={brand.value} > {brand.label} </option>
                                         )}
                                         <option></option>
-                                    </select> */}
-                                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                                    </select>
+                                    {/* <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                         <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm"></span>
                                         <input
                                             type="text"
@@ -207,7 +216,7 @@ export default function AdminProductForm() {
                                             id="brand"
                                             className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                         />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 
@@ -355,7 +364,7 @@ export default function AdminProductForm() {
 
                 <div className="mt-6 flex items-center justify-end gap-x-6">
                     <button
-                        onClick={e => (<Navigate to='/admin' replace={true}></Navigate>)}
+                        onClick={e => navigate('/admin')}
                         type="button" className="text-sm font-semibold leading-6 text-gray-900">
                         Cancel
                     </button>

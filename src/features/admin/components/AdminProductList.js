@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ChevronLeftIcon, ChevronRightIcon, StarIcon } from '@heroicons/react/20/solid'
 
@@ -19,7 +19,8 @@ import {
 } from '@headlessui/react'
 import { PencilIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import Pagination from '../../common/Pagination';
 
 import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants';
 
@@ -44,6 +45,8 @@ export default function AdminProductList() {
 
   const totalItems = useSelector(selectTotalItems);
 
+  const [selected, setSelected] = useState(null);
+
   const filters = [
     {
       id: 'brand',
@@ -66,22 +69,23 @@ export default function AdminProductList() {
     //section is for knowing that what by which property we are filtering
     //option is for knowing that what is the option choose
     //eg. section - brand , option - apple
-    const newFilter = { ...filter }
-    if (e.target.checked) {
+
+    const newFilter = {}
+
+    //to manage closing filter
+    if (option === "close") {
+      setFilter({})
+      console.log("filter obj", {});
+    }
+    else {
       if (newFilter[section.id]) {
         newFilter[section.id].push(option.value)
       }
       else {
         newFilter[section.id] = [option.value]
       }
+      setFilter(newFilter);
     }
-    else {
-      const index = newFilter[section.id].findIndex(i => i === option.value)
-      newFilter[section.id].splice(index, 1)
-    }
-
-    setFilter(newFilter);
-    console.log("filter obj", { newFilter });
   }
 
   const handleSort = (e, option) => {
@@ -110,10 +114,10 @@ export default function AdminProductList() {
   }, [])
 
   return (
-    <div className="bg-white">
+    <div className="bg-white rounded-xl shadow-xl">
       <div>
         {/* Mobile filter dialog */}
-        <MobileFilter mobileFiltersOpen={mobileFiltersOpen} setMobileFiltersOpen={setMobileFiltersOpen} handleFilter={handleFilter} filters={filters}></MobileFilter>
+        <MobileFilter mobileFiltersOpen={mobileFiltersOpen} setMobileFiltersOpen={setMobileFiltersOpen} handleFilter={handleFilter} filters={filters} selected={selected} setSelected={setSelected}></MobileFilter>
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
@@ -183,10 +187,48 @@ export default function AdminProductList() {
             </h2>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-              <DesktopFilter handleFilter={handleFilter} filters={filters}></DesktopFilter>
+              <DesktopFilter handleFilter={handleFilter} filters={filters} selected={selected} setSelected={setSelected}></DesktopFilter>
 
               {/* Product grid */}
               <div className="lg:col-span-3">
+
+                <div className='flex flex-wrap'>
+
+                  <div className='flex flex-wrap items-center'>
+                    {filter?.brand?.length > 0 &&
+                      <div className='text-blue-600 m-2'>Filter by Brand : </div>
+                    }
+
+                    <div className='flex items-center flex-wrap gap-2 m-2'>
+                      {filter?.brand?.length > 0 &&
+                        <div className='flex items-center justify-center gap-2 bg-blue-200 text-blue-600 rounded-lg py-1 px-2'>
+                          {filter.brand[0]} {<XMarkIcon
+                            onClick={e => { setFilter({}); setSelected(null) }}
+                            className='h-5 w-5 hover:scale-125'></XMarkIcon>}
+                        </div>
+                      }
+                    </div>
+                  </div>
+
+                  <div className='flex flex-wrap items-center'>
+
+                    {filter?.category?.length > 0 &&
+                      <div className='text-blue-600 m-2'>Filter by Category : </div>
+                    }
+
+                    <div className='flex items-center flex-wrap gap-2 m-2'>
+                      {filter?.category?.length > 0 &&
+                        <div className='flex items-center justify-center gap-2 bg-blue-200 text-blue-600 rounded-lg py-1 px-2'>
+                          {filter.category} {<XMarkIcon
+                            onClick={e => { setFilter({}); setSelected(null) }}
+                            className='h-5 w-5 hover:scale-125'></XMarkIcon>}
+                        </div>
+                      }
+                    </div>
+                  </div>
+
+                </div>
+
                 <ProductsGrid products={products}></ProductsGrid>
               </div>
             </div>
@@ -202,7 +244,7 @@ export default function AdminProductList() {
 }
 
 
-function MobileFilter({ mobileFiltersOpen, setMobileFiltersOpen, handleFilter, filters }) {
+function MobileFilter({ mobileFiltersOpen, setMobileFiltersOpen, handleFilter, filters, selected, setSelected }) {
   return (
     <Transition show={mobileFiltersOpen}>
       <Dialog className="relative z-40 lg:hidden" onClose={setMobileFiltersOpen}>
@@ -252,7 +294,8 @@ function MobileFilter({ mobileFiltersOpen, setMobileFiltersOpen, handleFilter, f
                             <span className="font-medium text-gray-900">{section.name}</span>
                             <span className="ml-6 flex items-center">
                               {open ? (
-                                <MinusIcon className="h-5 w-5" aria-hidden="true" />
+                                <MinusIcon
+                                  onClick={e => { setSelected(null); handleFilter(e, section, "close") }} className="h-5 w-5" aria-hidden="true" />
                               ) : (
                                 <PlusIcon className="h-5 w-5" aria-hidden="true" />
                               )}
@@ -268,8 +311,9 @@ function MobileFilter({ mobileFiltersOpen, setMobileFiltersOpen, handleFilter, f
                                   name={`${section.id}[]`}
                                   defaultValue={option.value}
                                   type="checkbox"
+                                  checked={option.value === selected}
+                                  onChange={(e) => { setSelected(option.value); handleFilter(e, section, option) }}
                                   defaultChecked={option.checked}
-                                  onChange={e => handleFilter(e, section, option)}
                                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                 />
                                 <label
@@ -295,7 +339,7 @@ function MobileFilter({ mobileFiltersOpen, setMobileFiltersOpen, handleFilter, f
   );
 }
 
-function DesktopFilter({ handleFilter, filters }) {
+function DesktopFilter({ handleFilter, filters, selected, setSelected }) {
   return (
     <form className="hidden lg:block">
       <h3 className="sr-only">Categories</h3>
@@ -309,7 +353,8 @@ function DesktopFilter({ handleFilter, filters }) {
                   <span className="font-medium text-gray-900">{section.name}</span>
                   <span className="ml-6 flex items-center">
                     {open ? (
-                      <MinusIcon className="h-5 w-5" aria-hidden="true" />
+                      <MinusIcon
+                        onClick={e => { setSelected(null); handleFilter(e, section, "close") }} className="h-5 w-5" aria-hidden="true" />
                     ) : (
                       <PlusIcon className="h-5 w-5" aria-hidden="true" />
                     )}
@@ -325,8 +370,9 @@ function DesktopFilter({ handleFilter, filters }) {
                         name={`${section.id}[]`}
                         defaultValue={option.value}
                         type="checkbox"
+                        checked={option.value === selected}
+                        onChange={(e) => { setSelected(option.value); handleFilter(e, section, option) }}
                         defaultChecked={option.checked}
-                        onChange={e => handleFilter(e, section, option)}
                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                       />
                       <label
@@ -347,74 +393,20 @@ function DesktopFilter({ handleFilter, filters }) {
   );
 }
 
-function Pagination({ page, setPage, handlePage, totalItems }) {
-  const totalPage = Math.ceil(totalItems / ITEMS_PER_PAGE);
-  return (
-    <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-      <div className="flex flex-1 justify-between sm:hidden">
-        <div
-          onClick={e => handlePage(page > 1 ? page - 1 : totalPage)}
-          className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-        >
-          Previous
-        </div>
-        <div
-          onClick={e => handlePage(page < totalPage ? page + 1 : 1)}
-          className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-        >
-          Next
-        </div>
-      </div>
-      <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-        <div>
-          <p className="text-sm text-gray-700">
-            Showing <span className="font-medium">{(page - 1) * (ITEMS_PER_PAGE) + 1}</span> to <span className="font-medium">{page * ITEMS_PER_PAGE > totalItems ? totalItems : page * ITEMS_PER_PAGE}</span> of{' '}
-            <span className="font-medium">{totalItems}</span> results
-          </p>
-        </div>
-        <div>
-          <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-            <div
-              onClick={e => handlePage(page > 1 ? page - 1 : totalPage)}
-              className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              <span className="sr-only">Previous</span>
-              <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-            </div>
-            {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
-
-            {Array.from({ length: Math.ceil(totalItems / ITEMS_PER_PAGE) }).map((el, index) => (
-              <div key={index}
-                onClick={e => handlePage(index + 1)}
-                aria-current="page"
-                className={`relative cursor-pointer z-10 inline-flex items-center ${index + 1 === page ? 'bg-indigo-600 text-white' : 'bg-white text-gray-400'}  px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
-              >
-                {index + 1}
-              </div>
-            )
-            )}
-
-            <div
-              onClick={e => handlePage(page < totalPage ? page + 1 : 1)}
-              className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              <span className="sr-only">Next</span>
-              <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-            </div>
-          </nav>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function ProductsGrid({ products }) {
   return (
     <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8">
-        <div>
+      <div className="mx-auto max-w-2xl p-4 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8">
+        <div className='flex flex-wrap gap-2'>
           <Link to="/admin/product-form"
-            className='rounded-md bg-green-600 mt-3 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600'>Add New Product</Link>
+            className='rounded-md bg-green-600 mb-3 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 mx-2'>
+              <PlusIcon className="h-5 w-5 inline my-auto mx-1" aria-hidden="true" />
+              Add New Product</Link>
+
+            <Link to="/admin/createBrand"
+            className='rounded-md bg-green-600 mb-3 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 mx-2'>
+              <PlusIcon className="h-5 w-5 inline my-auto mx-1" aria-hidden="true" />
+              Add New Brands / Categories</Link>
         </div>
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {Array.isArray(products) && products?.map((product) => (
