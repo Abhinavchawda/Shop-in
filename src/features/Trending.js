@@ -52,7 +52,7 @@ const Trending = () => {
           {
             trending.map((d) => (
               <div key={d.id} className='rounded-xl bg-white shadow-md overflow-hidden'>
-                <img src={d.image} alt='trending' className='mx-auto rounded-xl w-[80vw] h-[400px]'></img>
+                <img src={d.image} alt='trending' className='mx-auto rounded-xl w-[80vw] h-[400px] object-none'></img>
               </div>
             ))
           }

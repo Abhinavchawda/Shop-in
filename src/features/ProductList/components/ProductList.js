@@ -431,8 +431,9 @@ function ProductsGrid({ products }) {
                   </div>
 
                   <div className="flex flex-col items-center text-sm font-medium text-gray-900">
-                    <p>${Math.round(discountedPrice(product) * (1 - product.discountPercentage / 100))}</p>
-                    <p className="line-through text-gray-400">${discountedPrice(product)}</p>
+                    <p>${Math.round(product?.price)}</p>
+                    {/* <p>${Math.round(discountedPrice(product) * (1 - product.discountPercentage / 100))}</p> */}
+                    {/* <p className="line-through text-gray-400">${Math.round(product?.price)}</p> */}
                   </div>
                 </div>
               </div>
