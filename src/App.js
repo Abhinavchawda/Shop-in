@@ -24,7 +24,7 @@ import AdminProductFormPage from "./pages/AdminProdctFormPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 import AboutUs from "./pages/AboutUsPage";
 import ContactUs from "./pages/ContactUsPage";
-import AdminBrandsCategories from "./features/ProductList copy/components/AdminBrandsCategories";
+import AdminBrandsCategories from "./features/admin/components/AdminBrandsCategories";
 
 const router = createBrowserRouter([
   {

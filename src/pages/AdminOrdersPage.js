@@ -1,4 +1,4 @@
-import AdminOrders from '../features/ProductList copy/components/AdminOrders';
+import AdminOrders from '../features/admin/components/AdminOrders';
 import Footer from '../features/navbar/Footer';
 import NavBar from '../features/navbar/NavBar';
 

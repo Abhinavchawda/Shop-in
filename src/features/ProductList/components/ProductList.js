@@ -97,11 +97,11 @@ export default function ProductList() {
   const handleSort = (e, option) => {
     const newSort = { ...sort, _sort: option.sort, _order: option.order };
     setSort(newSort)
-    console.log({ newSort })
+    // console.log({ newSort })
   }
 
   const handlePage = (page) => {
-    console.log({ page });
+    // console.log({ page });
     setPage(page);
   }
 

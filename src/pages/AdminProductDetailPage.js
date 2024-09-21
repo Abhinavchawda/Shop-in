@@ -1,10 +1,11 @@
+import AdminProductList from '../features/admin/components/AdminProductList';
 import NavBar from '../features/navbar/NavBar';
 
 function AdminProductListPage() {
     return (
         <div>
             <NavBar>
-                <AdminProductListPage></AdminProductListPage>
+                <AdminProductList></AdminProductList>
             </NavBar>
         </div>
     );
