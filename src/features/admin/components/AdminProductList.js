@@ -23,6 +23,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '../../common/Pagination';
 
 import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants';
+import { selectSearch } from '../../navbar/SearchSlice';
 
 const sortOptions = [
   { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
@@ -394,56 +395,60 @@ function DesktopFilter({ handleFilter, filters, selected, setSelected }) {
 }
 
 function ProductsGrid({ products }) {
+  const searchObj = useSelector(selectSearch);
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl p-4 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8">
         <div className='flex flex-wrap gap-2'>
           <Link to="/admin/product-form"
             className='rounded-md bg-green-600 mb-3 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 mx-2'>
-              <PlusIcon className="h-5 w-5 inline my-auto mx-1" aria-hidden="true" />
-              Add New Product</Link>
+            <PlusIcon className="h-5 w-5 inline my-auto mx-1" aria-hidden="true" />
+            Add New Product</Link>
 
-            <Link to="/admin/createBrand"
+          <Link to="/admin/createBrand"
             className='rounded-md bg-green-600 mb-3 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 mx-2'>
-              <PlusIcon className="h-5 w-5 inline my-auto mx-1" aria-hidden="true" />
-              Add New Brands / Categories</Link>
+            <PlusIcon className="h-5 w-5 inline my-auto mx-1" aria-hidden="true" />
+            Add New Brands / Categories</Link>
         </div>
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.isArray(products) && products?.map((product) => (
-            <Link to={`/product-detail/${product.id}`} key={product.id}
-              className="group shadow-lg bg-white rounded-lg relative overflow-hidden hover:scale-105 transition duration-300 ease-in-out"
-            >
-              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-t-lg">
-                <img
-                  src={product.thumbnail}
-                  alt={product.title}
-                  className="w-full h-full object-cover object-center"
-                />
-              </div>
-              <div className="p-4 flex flex-col gap-2">
-                <h3 className="text-sm font-medium text-gray-900 line-clamp-2">{product.title}</h3>
-                <div className="flex justify-between items-center gap-1 text-blue-950">
-                  <div className='flex justify-center items-center gap-2'>
-                    <StarIcon className="h-5 w-5" />
-                    <span className="text-xs">{product.rating}</span>
-                  </div>
+          {Array.isArray(products) &&
+            products?.filter((product) => {
+              return product.title.toLowerCase().includes(searchObj.search.toLowerCase());
+            }).map((product) => (
+              <Link to={`/product-detail/${product.id}`} key={product.id}
+                className="group shadow-lg bg-white rounded-lg relative overflow-hidden hover:scale-105 transition duration-300 ease-in-out"
+              >
+                <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-t-lg">
+                  <img
+                    src={product.thumbnail}
+                    alt={product.title}
+                    className="w-full h-full object-cover object-center"
+                  />
+                </div>
+                <div className="p-4 flex flex-col gap-2">
+                  <h3 className="text-sm font-medium text-gray-900 line-clamp-2">{product.title}</h3>
+                  <div className="flex justify-between items-center gap-1 text-blue-950">
+                    <div className='flex justify-center items-center gap-2'>
+                      <StarIcon className="h-5 w-5" />
+                      <span className="text-xs">{product.rating}</span>
+                    </div>
 
-                  <div className="flex flex-col items-center text-sm font-medium text-gray-900">
-                    <p>${Math.round(product?.price)}</p>
-                    {/* <p>${Math.round(discountedPrice(product) * (1 - product.discountPercentage / 100))}</p>
+                    <div className="flex flex-col items-center text-sm font-medium text-gray-900">
+                      <p>${Math.round(product?.price)}</p>
+                      {/* <p>${Math.round(discountedPrice(product) * (1 - product.discountPercentage / 100))}</p>
                     <p className="line-through text-gray-400">${discountedPrice(product)}</p> */}
+                    </div>
+                  </div>
+
+                  <div className='mt-2'>
+                    <Link to={`/admin/product-form/edit/${product.id}`}
+                      className='rounded-md bg-indigo-700 px-3 py-2 font-semibold text-white hover:bg-indigo-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center justify-center gap-5 text-md mx-auto w-[4/5]'>
+                      Edit Product {<PencilIcon className='h-5 w-5 hover:scale-125 transition-transform duration-300'></PencilIcon>}
+                    </Link>
                   </div>
                 </div>
-
-                <div className='mt-2'>
-                  <Link to={`/admin/product-form/edit/${product.id}`}
-                    className='rounded-md bg-indigo-700 px-3 py-2 font-semibold text-white hover:bg-indigo-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center justify-center gap-5 text-md mx-auto w-[4/5]'>
-                    Edit Product {<PencilIcon className='h-5 w-5 hover:scale-125 transition-transform duration-300'></PencilIcon>}
-                  </Link>
-                </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
 
         </div>
       </div>
