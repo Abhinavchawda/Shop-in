@@ -10,9 +10,10 @@ import {
 } from '@headlessui/react'
 import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, NavLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectItems } from '../cart/cartSlice'
 import { selectUserInfo } from '../user/userSlice'
+import { updateSearch } from './SearchSlice'
 
 const navigation = [
     { name: 'Home', link: '/', user: true, admin: true },
@@ -36,9 +37,12 @@ export default function NavBar({ children }) {
     const items = useSelector(selectItems)
     const user = useSelector(selectUserInfo)
 
-    // const handleSearch = (e) => {
-    //     console.log(e.target.value)
-    // }
+    const dispatch = useDispatch();
+
+    const handleSearch = (e) => {
+        dispatch(updateSearch(e.target.value));
+        // console.log(e.target.value)
+    }
     return (
         <>
             {/*This example requires updating your template:
@@ -87,8 +91,9 @@ export default function NavBar({ children }) {
 
                                     <div className='flex items-center justify-center gap-5'>
                                         <input className='rounded-xl bg-gray-900 text-white border hover:border-white w-[55vw] md:w-[37vw]'
-                                            placeholder='Search Products'>
-                                            {/* onChange={e=>handleSearch(e)} */}
+                                            placeholder='Search Products'
+                                            onChange={e => handleSearch(e)}
+                                            >
                                         </input>
                                     </div>
 
