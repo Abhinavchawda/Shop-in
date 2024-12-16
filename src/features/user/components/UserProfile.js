@@ -64,7 +64,7 @@ export default function User() {
           <div className="bg-white mt-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pb-5 rounded-xl shadow-xl">
             <div className="border-t border-gray-200">
               <h2 className="font-bold text-2xl mt-4 py-4 px-2 sm:px-4 lg:px-8">
-                Name : {user?.addresses.length > 0 && user.addresses[0]?.name}
+                Name : {user?.addresses?.length > 0 && user?.addresses[0]?.name}
               </h2>
               <h6 className="font-bold text-xl py-4 px-2 sm:px-4 lg:px-8">
                 Email : {user?.email}

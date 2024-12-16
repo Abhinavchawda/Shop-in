@@ -15,9 +15,11 @@ export default function Cart() {
 
   const [open, setOpen] = useState(true)
 
-  const items = useSelector(selectItems)
-  const totalAmount = Math.round(items?.reduce((amount, item) => discountedPrice(item?.product) * item?.quantity + amount, 0))
-  const totalItems = items?.reduce((total, item) => item?.quantity + total, 0)
+  const items = useSelector(selectItems) || [];
+  const totalAmount = Array.isArray(items) ? (Math.round(items?.reduce((amount, item) => 
+    discountedPrice(item?.product) * item?.quantity + amount, 0)
+  )) : 0;
+  const totalItems = Array.isArray(items) ? (items?.reduce((total, item) => item?.quantity + total, 0)) : 0;
 
   let user = useSelector(selectUserInfo)    //we use let, coz its value may change on reset card
   const handleQuantity = (e, item) => {
@@ -42,13 +44,13 @@ export default function Cart() {
         <div className='pt-10 flex items-center justify-center text-red-500 font-bold text-4xl'>
           Cart is Empty
         </div>
-       }
+      }
 
       <h2 className="font-bold text-4xl my-4 py-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-10">Cart</h2>
       <div className="border-t border-gray-200 py-6  px-2 sm:px-4 md:px-6 lg:px-8 xl:px-10">
         <div className="flow-root">
           <ul className="-my-6 divide-y divide-gray-200">
-            {items?.map((item) => (
+            {Array.isArray(items) && items?.map((item) => (
               <li key={item?.id} className="flex py-5">
                 <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                   <img

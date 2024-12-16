@@ -1,69 +1,82 @@
+const { createTokenAndSaveCookie } = require("../jwt/generateToken");
 const { User } = require("../model/User")
-
-const crypto = require('crypto')
+const bcrypt = require('bcryptjs');
 
 require('dotenv').config();
 
-const SECRET_KEY = process.env.SECRET_KEY
-const jwt = require('jsonwebtoken')
-
 exports.createUser = async (req, res) => {
-    const user = req.body
     try {
-        // const newUser = new User({email: user.email, role: user.role, password: user.password, name: user.name})
-        // const doc = await newUser.save()
-        // res.status(201).json({ id: doc.id, email: doc.email, role: user.role })
+        const { username, email, password, address, role} = req.body;   //destructuring the values
+        
+        const check = await User.findOne({ email });        
+        if (check) {
+            return res.status(400).json({ message: "User (email) already exits !" });
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);  // (password, salt)
+        
+        const newUser = await new User({
+            "password": hashedPassword,
+            username, email, "addresses": address, role
+        });
+        
+        const user = { id: newUser._id, username, email, "addresses": address, role };
 
-        const salt = crypto.randomBytes(16)
-        crypto.pbkdf2(
-            req.body.password,
-            salt,
-            31000,
-            32,
-            'sha256',
-            async function (err, hashedPassword) {
-                const user = new User({ ...req.body, password: hashedPassword, salt })
-                const doc = await user.save();
-
-                req.login({ id: doc.id, role: doc.role }, (err) => {
-                    if(err) {
-                        res.status(400).json(err)
-                    }
-                    else {
-                        const token = jwt.sign({ id: doc.id, role: doc.role }, SECRET_KEY)
-                        res.status(201).json(token)
-                    }
-                })
-            }
-        )
+        await newUser.save().then(() => {
+            createTokenAndSaveCookie(user.email, res);
+            res.status(200).json({ message: "Sign-up successful !", user });
+        });
     }
     catch (err) {
-        console.log("ERROR in createUser() in Auth.js")
+        console.log("ERROR in signup() in Auth.js")
         res.status(400).json(err)
     }
 }
 
-exports.loginUser = async (req, res) => {    
-    res.json(req.user)
+exports.loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const checkUser = await User.findOne({ email });
+        if (!checkUser) {
+            res.status(404).json({ message: "User not found" });
+        }
 
-    // const user = await User.findOne({ email: req.body.email })
-    // try {
-    //     if(! user) {
-    //         res.status(400).json({"message" : "Login Failed"})
-    //     }
-    //     else if(user.password === req.body.password) {
-    //         res.status(200).json({ id: user.id, name: user.name, email: user.email, addresses: user.addresses, role: user.role })
-    //     }
-    //     else {
-    //         console.log(user)
-    //         res.status(400).json({"message" : "Login failed"})
-    //     }
-    // }
-    // catch(error) {
-    //     res.status(400).json(error)
-    // }
+        const isMatch = await bcrypt.compare(password, checkUser.password);
+        if (!isMatch) {
+            res.status(404).json({ message: "Invalid credentials !" });
+        }
+
+        const user = {
+            id: checkUser._id,
+            username: checkUser.username,
+            email: checkUser.email,
+            addresses: checkUser.addresses,
+            role: checkUser.role,
+            orders: checkUser.orders
+        }
+        createTokenAndSaveCookie(user.email, res);
+        res.status(201).json({ message: "Log-in successful !", user });
+    }
+    catch (err) {
+        console.log("ERROR in user.js in login : ", err);
+        res.status(500).json({ message: "Server err in user.js in login" });
+    }
 }
 
-exports.checkUser = async (req, res) => {
-    res.json(req.user)
+exports.checkUserLoggedIn = async (req, res) => {
+    const user = req.user;
+    if(user)
+        res.status(200).json(user);    //status ok
+    else
+        res.status(500);    //status error
+}
+
+exports.logOut = async (req, res) => {
+    try {
+        res.clearCookie('jwt');
+        res.status(200).json({ message: "Logged out successfully !" });
+    }
+    catch (err) {
+        console.log("ERROR in user.js in logOut : ", err);
+        res.status(500).json({ message: "Server err in user.js in logOut()" });
+    }
 }

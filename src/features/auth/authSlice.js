@@ -45,9 +45,9 @@ export const authSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
+    setLoggedInUser(state, action) {
+      state.loggedInUser = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -84,4 +84,5 @@ export const authSlice = createSlice({
 export const selectLoggedInUser = (state) => state.auth.loggedInUser;
 export const selectError = (state) => state.auth.error;
 
+export const { setLoggedInUser } = authSlice.actions;
 export default authSlice.reducer;

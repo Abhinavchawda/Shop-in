@@ -5,7 +5,8 @@ export function createUser(userData) {
       {
         method: 'POST',
         body: JSON.stringify(userData),
-        headers: { 'content-type': 'application/json' }
+        headers: { 'content-type': 'application/json' },
+        credentials: "include"
       }
     )
 
@@ -22,11 +23,12 @@ export function checkUser(loginInfo) {
         {
           method: 'POST',
           body: JSON.stringify(loginInfo),
-          headers: { 'content-type': 'application/json' }
+          headers: { 'content-type': 'application/json' },
+          credentials: "include"
         }
       )
-      
-      if(response.ok) {  //if password verified 
+
+      if (response.ok) {  //if password verified 
         const data = await response.json();
         resolve({ data })
       }
@@ -42,9 +44,19 @@ export function checkUser(loginInfo) {
   );
 }
 
-export function signOut(userId) {
+export function signOut() {
   return new Promise(async (resolve, reject) => {
-    resolve({ data: 'success' })
+    const response = await fetch("https://shop-in-server.vercel.app/auth/logout/", {
+      method: "POST"
+    })
+      .then(resp => {
+        if (resp.ok) {
+          // Set the cookie's expiration to a past date to delete it
+          document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          // navigate('/login');
+        }
+      })
+      .catch(error => console.error('Logout failed', error));
   }
   );
 }

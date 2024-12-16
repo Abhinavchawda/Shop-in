@@ -10,7 +10,7 @@ import PageNotFound from "./pages/404";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
-import { selectLoggedInUser } from "./features/auth/authSlice";
+import { selectLoggedInUser, setLoggedInUser } from "./features/auth/authSlice";
 import OrderSuccess from "./pages/orderSuccessPage";
 import UserOrdersPage from "./pages/UserOrdersPage";
 import UserProfilePage from "./pages/UserProfilePage";
@@ -142,6 +142,20 @@ function App() {
       dispatch(fetchLoggedInUserAsync(user?.id))
     }
   }, [dispatch, user])
+
+  useEffect(() => {
+    const checkUserLoggendIn = async () => {
+        const response = await fetch("https://shop-in-server.vercel.app/auth/checkUserLoggedIn/", {
+          method: "GET",
+          credentials: "include"
+        });
+        if(response.ok) {
+          const data = await response.json();
+          dispatch(setLoggedInUser(data));
+        }
+    }
+    checkUserLoggendIn();
+  }, []);
 
   return (
     <div className="overflow-hidden font-lora">

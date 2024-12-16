@@ -38,13 +38,13 @@ export default function UserOrders() {
     <div className='min-h-screen overflow-hidden'>
       <div className='text-xl font-semibold p-4'>My Orders</div>
 
-      {(!orders || orders.length == 0) &&
+      {(!orders || orders?.length == 0) &&
         <div className='flex items-center justify-center text-xl font-semibold pt-8'>
           No Orders, Please Place an Order !
         </div>
       }
 
-      {orders && orders.map((order, index) => (
+      {Array.isArray(orders) && orders.map((order, index) => (
 
         <div key={index} className='pb-5'>
 
@@ -73,7 +73,7 @@ export default function UserOrders() {
             <div className="border-t border-gray-200 py-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-10">
               <div className="flow-root">
                 <ul role="list" className="-my-4 divide-y divide-gray-200">
-                  {order.items.map((item) => (
+                  {Array.isArray(Array.isArray(order?.items)) && order.items?.map((item) => (
                     <li key={item.id} className="flex py-3">
                       <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 my-auto">
                         <img
