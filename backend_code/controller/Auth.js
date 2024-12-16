@@ -37,12 +37,12 @@ exports.loginUser = async (req, res) => {
         const { email, password } = req.body;
         const checkUser = await User.findOne({ email });
         if (!checkUser) {
-            res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: "User not found" });
         }
 
         const isMatch = await bcrypt.compare(password, checkUser.password);
         if (!isMatch) {
-            res.status(404).json({ message: "Invalid credentials !" });
+            return res.status(404).json({ message: "Invalid credentials !" });
         }
 
         const user = {
@@ -54,7 +54,7 @@ exports.loginUser = async (req, res) => {
             orders: checkUser.orders
         }
         createTokenAndSaveCookie(user.email, res);
-        res.status(201).json({ message: "Log-in successful !", user });
+        return res.status(201).json({ message: "Log-in successful !", user });
     }
     catch (err) {
         console.log("ERROR in user.js in login : ", err);
