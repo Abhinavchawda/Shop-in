@@ -17,7 +17,7 @@ exports.secureRoute = async (req, res, next) => {
 
         // const user = {"token": verified.id}
         const { email } = verified;
-        const user = await User.findOne({ email });  //removing the password from user
+        const user = await User.findOne({ email }).select("-password");  //removing the password from user
         if(!user) {
             return res.status(404).json({ message: "User not found" });
         }

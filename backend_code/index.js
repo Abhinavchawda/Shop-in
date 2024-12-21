@@ -27,7 +27,7 @@ const ordersRouter = require("./routes/Order");
 // }))
 
 server.use(cors({
-  origin: "https://shop-in-chi.vercel.app", // Your React app's URL
+  origin: ["https://shop-in-chi.vercel.app", "https://shop-in-chi.vercel.app/"], // Your React app's URL
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // Allowed HTTP methods
   credentials: true, // Allow cookies if needed
   exposedHeaders: ['X-Total-Count']

@@ -6,7 +6,7 @@ require('dotenv').config();
 
 exports.createUser = async (req, res) => {
     try {
-        const { username, email, password, address, role} = req.body;   //destructuring the values
+        const { username, email, password } = req.body;   //destructuring the values
         
         const check = await User.findOne({ email });        
         if (check) {
@@ -16,10 +16,10 @@ exports.createUser = async (req, res) => {
         
         const newUser = await new User({
             "password": hashedPassword,
-            username, email, "addresses": address, role
+            username, email
         });
         
-        const user = { id: newUser._id, username, email, "addresses": address, role };
+        const user = { id: newUser._id, username, email };
 
         await newUser.save().then(() => {
             createTokenAndSaveCookie(user.email, res);

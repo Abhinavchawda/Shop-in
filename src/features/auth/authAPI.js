@@ -44,19 +44,19 @@ export function checkUser(loginInfo) {
   );
 }
 
-export function signOut() {
-  return new Promise(async (resolve, reject) => {
-    const response = await fetch("https://shop-in-server.vercel.app/auth/logout/", {
-      method: "POST"
-    })
-      .then(resp => {
-        if (resp.ok) {
-          // Set the cookie's expiration to a past date to delete it
-          document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          // navigate('/login');
-        }
-      })
-      .catch(error => console.error('Logout failed', error));
+export async function signOut() {
+  try {
+    const response = await fetch('https://shop-in-server.vercel.app/auth/logout', {
+      method: 'POST',
+      credentials: 'include', // Ensure cookies are included in the request
+    });
+    if (response.ok) {
+      console.log('Logged out successfully');
+      window.location.href = '/login';
+    } else {
+      console.error('Failed to log out');
+    }
+  } catch (error) {
+    console.error('An error occurred during logout:', error);
   }
-  );
 }
